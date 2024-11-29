@@ -1,0 +1,49 @@
+.hero__slider {
+  position: relative;
+  .owl-carousel {
+    position: relative;
+  }
+}
+
+.hero__items {
+  position: relative;
+  height: 500px; /* Adjust height as necessary */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero__text {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  color: #fff;
+  z-index: 10; /* Ensures text appears over the image */
+}
+
+.hero__text .label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.hero__text h2 {
+  font-size: 40px;
+  margin-top: 10px;
+}
+
+.hero__text p {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.hero__text a {
+  font-size: 18px;
+  text-decoration: none;
+  color: #fff;
+  margin-top: 20px;
+  display: inline-block;
+}
+
+.hero__text a i {
+  margin-left: 10px;
+}

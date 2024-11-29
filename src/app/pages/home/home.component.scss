@@ -1,0 +1,14 @@
+/* Block scrolling on body when modal is open */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Add pointer-events none to the rest of the page */
+body.modal-open *:not(.modal-content) {
+  pointer-events: none;
+}
+
+/* Ensure modal content can still be interacted with */
+.modal-content {
+  pointer-events: auto;
+}
