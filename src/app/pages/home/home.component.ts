@@ -1,94 +1,97 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { MovieService } from '../../services/movie.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+  styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   isModalOpen: boolean = false;
-  videoUrl: SafeResourceUrl | null = null;
-  products = [
-    {
-      title: 'The Seven Deadly Sins: Wrath of the Gods',
-      image: 'img/trending/trend-1.jpg',
-      rating: '18 / 18',
-      videoUrl: 'https://youtu.be/X3iG2mjLtLE?si=DxLxgo4Rh-ue6fkN',
-      showPlayButton: false,
-    },
-    {
-      title: 'My Hero Academia: World Heroes Mission',
-      image: 'img/trending/trend-2.jpg',
-      rating: '15 / 18',
-      videoUrl: 'https://www.youtube.com/embed/qeQQ-Vo2w00',
-      showPlayButton: false,
-    },
-  ];
+  video: SafeResourceUrl | null = null;
+  isReleaseMovies: any[] = [];
+  notReleaseMovies: any[] = [];
+  loading: boolean = true;
+  error: string | null = null;
 
-  popularProducts = [
-    {
-      title: 'Popular Show 1',
-      image: 'img/trending/trend-3.jpg',
-      rating: '15 / 18',
-      videoUrl: 'https://www.youtube.com/embed/popular-video1',
-      showPlayButton: false,
-    },
-  ];
+  constructor(
+    private sanitizer: DomSanitizer,
+    private movieService: MovieService
+  ) {}
 
-  // constructor(private sanitizer: DomSanitizer) {}
+  mapMovieData(movie: any): any {
+    return {
+      id: movie.id,
+      title: movie.title,
+      image: movie.image,
+      video: movie.video,
+      isRelease: movie.isRelease,
+      rating: movie.rating,
+      showPlayButton: !!movie.video,
+    };
+  }
 
-  // openVideo(url: string): void {
-  //   this.isModalOpen = true;
-  //   this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  // }
+  ngOnInit(): void {
+    this.fetchMovies();
+  }
 
-  // closeVideo(): void {
-  //   this.isModalOpen = false;
-  //   this.videoUrl = null;
-  // }
+  // Gọi API để lấy danh sách phim
+  fetchMovies(): void {
+    this.loading = true;
+    this.movieService
+      .getAll()
+      .then((response) => {
+        const movies = response.data.data;
+        this.processReleaseMovies(movies);
+        this.processNotReleaseMovies(movies);
+      })
+      .catch((error) => {
+        this.error = 'Failed to load movies. Please try again later.';
+        console.error(error);
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+  }
 
-  constructor(private sanitizer: DomSanitizer) {}
+  processReleaseMovies(movies: any[]): void {
+    this.isReleaseMovies = movies
+      .filter((movie: any) => movie.isRelease === 0)
+      .map((movie: any) => this.mapMovieData(movie));
+  }
 
-  // Open video modal
+  processNotReleaseMovies(movies: any[]): void {
+    this.notReleaseMovies = movies
+      .filter((movie: any) => movie.isRelease === 1)
+      .map((movie: any) => this.mapMovieData(movie));
+  }
+
   openVideo(url: string): void {
     this.isModalOpen = true;
-    const videoUrl = this.getVideoUrl(url);
-    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
-    // Disable scrolling when modal is open
+    const video = this.getVideoUrl(url);
+    this.video = this.sanitizer.bypassSecurityTrustResourceUrl(video);
     document.body.classList.add('modal-open');
   }
 
-  // Close video modal
   closeVideo(): void {
     this.isModalOpen = false;
-    this.videoUrl = null;
-    // Re-enable scrolling when modal is closed
+    this.video = null;
     document.body.classList.remove('modal-open');
   }
 
-  // Function to extract video ID and return correct embed URL
+  // Chuyển URL video thành dạng embed
   getVideoUrl(url: string): string {
     let videoId: string = '';
-
-    // Check if URL is from youtu.be or youtube.com
     if (url.includes('youtu.be')) {
-      // Extract video ID from the 'youtu.be' URL
       const match = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
-      if (match) {
-        videoId = match[1];
-      }
+      if (match) videoId = match[1];
     } else if (url.includes('youtube.com')) {
-      // If the URL is already in the embed format
       const match = url.match(
         /(?:youtube\.com\/(?:v|e(?:mbed)?)\/|youtube\.com\/.*[?&]v=)([a-zA-Z0-9_-]{11})/
       );
-      if (match) {
-        videoId = match[1];
-      }
+      if (match) videoId = match[1];
     }
-
-    // Return the correct embed URL
     return `https://www.youtube.com/embed/${videoId}`;
   }
 }

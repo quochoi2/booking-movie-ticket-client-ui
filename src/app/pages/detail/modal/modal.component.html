@@ -1,0 +1,86 @@
+<div
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+>
+  <div class="bg-white rounded-lg w-[90%] max-w-4xl p-6 shadow-lg">
+    <!-- Header -->
+    <div class="flex justify-between items-center border-b pb-4">
+      <h2 class="text-lg font-semibold text-gray-800">Mua vé xem phim</h2>
+      <button
+        class="text-gray-400 hover:text-red-500 focus:outline-none"
+        (click)="closeModal()"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Seats -->
+    <div class="mt-6">
+      <div class="grid grid-cols-10 gap-2 px-[180px]">
+        <!-- Iterate over seat data -->
+        <div
+          *ngFor="let seat of seats"
+          class="w-10 h-10 flex items-center justify-center rounded-md cursor-pointer text-sm font-semibold"
+          [ngClass]="{
+            'bg-green-500 text-white':
+              seat.type === 'normal' &&
+              seat.isAvailable === 0 &&
+              !selectedSeats.includes(seat),
+            'bg-red-500 text-white':
+              seat.type === 'vip' &&
+              seat.isAvailable === 0 &&
+              !selectedSeats.includes(seat),
+            'bg-blue-500 text-white': selectedSeats.includes(seat),
+            'bg-gray-500 text-white cursor-not-allowed': seat.isAvailable === 1
+          }"
+          (click)="selectSeat(seat)"
+        >
+          <div class="text-white user-select-none">
+            {{ seat.seatNumber }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selected Seats and Price -->
+    <div class="mt-6 border-t pt-4">
+      <div class="text-gray-800 text-sm">
+        <p>
+          <strong>Chỗ ngồi:</strong>
+          <span class="text-gray-600" *ngIf="selectedSeats.length > 0">
+            {{ getSelectedSeatNumbers() }}
+          </span>
+          <span class="text-gray-400" *ngIf="selectedSeats.length === 0"
+            >Chưa chọn</span
+          >
+        </p>
+
+        <p>
+          <strong>Tạm tính:</strong>
+          <span class="text-red-600 font-semibold">
+            {{ getTotalPrice() | currency : "VND" }}
+          </span>
+        </p>
+      </div>
+      <button
+        class="mt-4 w-full bg-[#e53637] text-white py-2 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
+        (click)="confirmSelection()"
+        [disabled]="!canConfirmSelection()"
+      >
+        Mua vé
+      </button>
+    </div>
+  </div>
+</div>

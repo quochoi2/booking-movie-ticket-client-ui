@@ -1,1 +1,264 @@
-<p>detail works!</p>
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option bg-[#0B0C2A]">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__links">
+          <button class="text-white text-[15px]" [routerLink]="['/']">
+            Home
+          </button>
+          <span>&gt;&gt;</span>
+          <button class="text-white text-[15px]">Categories</button>
+          <span>&gt;&gt;</span>
+          <span>Romance</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Anime Section Begin -->
+<section class="anime-details spad bg-[#0B0C2A]">
+  <div class="container">
+    <div class="anime__details__content">
+      <div class="row">
+        <div class="col-lg-3">
+          <div
+            class="anime__details__pic set-bg"
+            [style.background-image]="'url(' + movie?.image + ')'"
+          >
+            <div class="comment"><i class="fa fa-comments"></i> 11</div>
+            <div class="view"><i class="fa fa-eye"></i> 9141</div>
+          </div>
+        </div>
+        <div class="col-lg-9">
+          <div class="anime__details__text">
+            <div class="anime__details__title">
+              <h3>{{ movie?.title || "Doraemon" }}</h3>
+              <span>フェイト／ステイナイト, Feito／sutei naito</span>
+            </div>
+            <div class="anime__details__rating">
+              <div class="rating">
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star-half-o"></i></a>
+              </div>
+              <span>1.029 Votes</span>
+            </div>
+            <p>
+              {{
+                movie?.description ||
+                  "Every human inhabiting the world of Alcia is branded by a “Count” or a number written on their body. For Hina’s mother, her total drops to 0 and she’s pulled into the Abyss, never to be seen again. But her mother’s last words send Hina on a quest to find a legendary hero from the Waste War - the fabled Ace!"
+              }}
+            </p>
+            <div class="anime__details__widget">
+              <div class="row">
+                <div class="col-lg-6 col-md-6">
+                  <ul>
+                    <li><span>Type:</span> Movie</li>
+                    <li>
+                      <span>Language:</span> {{ movie?.Language || "English" }}
+                    </li>
+                    <li><span>Date aired:</span> Oct 02, 2019 to ?</li>
+                    <li>
+                      <span>Status:</span>
+                      {{ movie?.isrelease === 0 ? "On sale" : "Off sale" }}
+                    </li>
+                    <li>
+                      <!-- <span>Genre:</span> Action, Adventure, Fantasy, Magic -->
+                      <span>Age:</span> {{ movie?.age || 18 }}+
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                  <ul>
+                    <li>
+                      <span>Scores:</span> {{ movie?.rating || "8" }} / 10
+                    </li>
+                    <li><span>Rating:</span> 8 / 10</li>
+                    <li><span>Duration:</span> 120 min</li>
+                    <li><span>Quality:</span> HD</li>
+                    <li><span>Views:</span> 131,541</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="anime__details__btn">
+              <a href="#" class="follow-btn"
+                ><i class="fa fa-heart-o"></i> Follow</a
+              >
+              <a href="#" class="watch-btn"><span>Order Now</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8 col-md-8">
+        <!-- Showtimes -->
+        <div class="container mb-5 px-0">
+          <div class="section-title">
+            <h5>Showtimes</h5>
+          </div>
+
+          <!-- Thanh ngày -->
+          <div class="flex gap-2 mb-4 overflow-x-auto">
+            <button
+              *ngFor="let day of weekDays"
+              [ngClass]="{
+                'py-2 px-4 rounded-lg font-semibold': true,
+                'bg-[#e53637] text-white':
+                  selectedDay?.date?.toDateString() ===
+                  day?.date?.toDateString(),
+                'bg-gray-200 text-gray-800':
+                  selectedDay?.date?.toDateString() !==
+                  day?.date?.toDateString()
+              }"
+              (click)="selectDay(day)"
+            >
+              {{ day?.name }}<br />
+              <span class="text-sm">{{ day?.date | date : "dd/MM" }}</span>
+            </button>
+          </div>
+
+          <!-- Thanh rạp -->
+          <div class="flex gap-2 mb-4 overflow-x-auto">
+            <!-- Nút "Tất cả" -->
+            <div
+              class="py-2 px-4 flex items-center gap-2 bg-gray-200 rounded-lg cursor-pointer"
+              [ngClass]="{ 'bg-[#e53637] text-white': !selectedCinema }"
+              (click)="selectCinema(null)"
+            >
+              All
+            </div>
+
+            <!-- Danh sách các rạp -->
+            <div
+              *ngFor="let cinema of cinemas"
+              class="py-2 px-4 flex items-center gap-2 bg-gray-200 rounded-lg cursor-pointer"
+              [ngClass]="{
+                'bg-[#e53637] text-white': selectedCinema?.id === cinema.id,
+                'bg-gray-200 text-gray-800': selectedCinema?.id !== cinema.id
+              }"
+              (click)="selectCinema(cinema)"
+            >
+              {{ cinema?.name }}
+            </div>
+          </div>
+
+          <!-- Lịch chiếu -->
+          <div
+            *ngIf="showtimes.length > 0; else noShowtimes"
+            class="px-4 pt-3 bg-slate-300 rounded-md"
+          >
+            <div *ngFor="let showtime of showtimes" class="pb-4">
+              <div class="flex items-center">
+                <div class="ml-2 flex justify-between w-full">
+                  <div>
+                    <h4 class="text-base font-semibold mb-1">
+                      {{ showtime?.cinema?.name }}
+                    </h4>
+                    <p class="text-sm text-gray-500 mb-2">
+                      {{ showtime?.cinema?.address }}
+                    </p>
+                  </div>
+                  <!-- Nút Bản đồ -->
+                  <div>
+                    <a
+                      *ngIf="showtime?.cinema?.address"
+                      [href]="getGoogleMapsUrl(showtime.cinema.address)"
+                      target="_blank"
+                      class="text-blue-500 hover:underline text-sm hover:text-[#e53637]"
+                    >
+                      [ Bản đồ ]
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="flex gap-2">
+                <button
+                  (click)="openModal(showtime.cinema.id)"
+                  class="py-2 px-4 bg-blue-100 text-gray-700 rounded-lg"
+                >
+                  {{ showtime?.timeStart | date : "shortTime" }} ~
+                  {{ showtime?.timeEnd | date : "shortTime" }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add modal -->
+          <app-seat-modal
+            *ngIf="isModalOpen"
+            [seats]="seats"
+            (onClose)="closeModal()"
+            (onConfirm)="handleSeatSelection($event)"
+          ></app-seat-modal>
+
+          <!-- Thông báo không có lịch chiếu -->
+          <ng-template #noShowtimes>
+            <div
+              class="p-5 bg-slate-300 rounded-md flex justify-center items-center"
+            >
+              <p class="text-gray-800 font-semibold text-center text-lg">
+                Showtime is not available
+              </p>
+            </div>
+          </ng-template>
+        </div>
+
+        <!-- comments -->
+        <div>
+          <div class="anime__details__review">
+            <div class="section-title">
+              <h5>Reviews</h5>
+            </div>
+            <div class="anime__review__item">
+              <div class="anime__review__item__pic">
+                <img src="img/anime/review-1.jpg" alt="" />
+              </div>
+              <div class="anime__review__item__text">
+                <h6>Chris Curry - <span>1 Hour ago</span></h6>
+                <p>
+                  whachikan Just noticed that someone categorized this as
+                  belonging to the genre "demons" LOL
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="anime__details__form">
+            <div class="section-title">
+              <h5>Your Comment</h5>
+            </div>
+            <form action="#">
+              <textarea placeholder="Your Comment"></textarea>
+              <button type="submit">
+                <i class="fa fa-location-arrow"></i> Review
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-4">
+        <div class="anime__details__sidebar">
+          <div class="section-title">
+            <h5>Movie is showing now</h5>
+          </div>
+          <div
+            class="product__sidebar__view__item set-bg"
+            data-setbg="img/sidebar/tv-1.jpg"
+          >
+            <div class="ep">18 / ?</div>
+            <div class="view"><i class="fa fa-eye"></i> 9141</div>
+            <h5><a href="#">Boruto: Naruto next generations</a></h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Anime Section End -->

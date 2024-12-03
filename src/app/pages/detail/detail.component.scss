@@ -1,0 +1,89 @@
+.breadcrumb__links {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Khoảng cách giữa các phần tử */
+  font-size: 14px;
+}
+
+.breadcrumb__links a:hover {
+  text-decoration: underline; /* Hiệu ứng hover */
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.modal-body {
+  padding: 20px 0;
+}
+
+.seats-container {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+}
+
+.seat {
+  width: 40px;
+  height: 40px;
+  background: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.seat-selected {
+  background: #4caf50;
+}
+
+.seat-vip {
+  background: #ff9800;
+}
+
+.seat-booked {
+  background: #f44336;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+.btn-confirm {
+  padding: 10px 20px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}

@@ -16,6 +16,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { DetailComponent } from './pages/detail/detail.component';
 import { BlogComponent } from './pages/blog/blog.component';
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
+import { ModalComponent } from './pages/detail/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.
     HomeComponent,
     DetailComponent,
     BlogComponent,
+    ModalComponent,
   ],
   imports: [AppRoutingModule, BrowserModule],
   providers: [],
