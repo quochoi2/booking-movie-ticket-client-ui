@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { CartService } from '../../../services/cart.service';
+import { DetailService } from '../../../services/detail.service';
 
 @Component({
   selector: 'app-seat-modal',
@@ -8,17 +10,32 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class ModalComponent {
   @Input() seats: any[] = []; // Seat data passed as an input
   @Output() onClose = new EventEmitter<void>(); // Emit event to close modal
-  @Output() onConfirm = new EventEmitter<any[]>(); // Emit selected seats on confirm
 
-  selectedSeats: any[] = []; // Track selected seats
+  services: any[] = [];
 
-  // Handle seat selection
+  isModal: boolean = false;
+  selectedSeats: any[] = [];
+
+  constructor(
+    private cartService: CartService,
+    private detailService: DetailService
+  ) {}
+
+  // submit
+  confirmSelection(): void {
+    this.cartService.setSeats(this.selectedSeats); // add infor of seats into cartservice
+  }
+
+  closeModalService(): void {
+    this.isModal = false;
+  }
+
+  // seats
   selectSeat(seat: any): void {
     if (seat.isAvailable !== 0) {
-      return; // Do nothing if seat is not available
+      return;
     }
 
-    // Toggle seat selection
     if (this.selectedSeats.includes(seat)) {
       this.selectedSeats = this.selectedSeats.filter((s) => s !== seat);
     } else {
@@ -26,13 +43,6 @@ export class ModalComponent {
     }
   }
 
-  // Confirm seat selection
-  confirmSelection(): void {
-    this.onConfirm.emit(this.selectedSeats); // Emit selected seats
-    this.closeModal();
-  }
-
-  // Close the modal
   closeModal(): void {
     this.onClose.emit(); // Emit close event
   }
