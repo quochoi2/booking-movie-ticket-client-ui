@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CinemaService } from '../../services/detail.service';
+import { DetailService } from '../../services/detail.service';
+import { CartService } from '../../services/cart.service';
+import { formatTime } from '../../utils/format-time';
 
 @Component({
   selector: 'app-detail',
@@ -9,21 +11,29 @@ import { CinemaService } from '../../services/detail.service';
 })
 export class DetailComponent implements OnInit {
   movie: any = null;
-  movieId: string = '';
+  movieId: any = '';
 
   weekDays: { name: string; date: Date; isToday: boolean }[] = [];
   selectedDay: { name: string; date: Date; isToday: boolean } | null = null;
   cinemas: any[] = [];
-  selectedCinema: any = '';
+  selectedCinema: any = null;
 
   showtimes: any[] = [];
 
   isModalOpen = false;
   seats: any[] = [];
 
+  movieTitle: string = '';
+  showtime: string = '';
+  date: string = '';
+  cinemaName: string = '';
+  showtimeId: number = 0;
+  cinemaId: number = 0;
+
   constructor(
-    private cinemaService: CinemaService,
-    private route: ActivatedRoute
+    private detailService: DetailService,
+    private route: ActivatedRoute,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -35,14 +45,12 @@ export class DetailComponent implements OnInit {
 
   // Lấy chi tiết phim
   getMovieDetails(movieId: string): void {
-    this.cinemaService
+    this.detailService
       .getDetail(movieId)
       .then((response: any) => {
         this.movie = response.data.data;
       })
-      .catch((err) => {
-        console.log('Error: ', err);
-      });
+      .catch((err) => console.error('Error fetching movie detail:', err));
   }
 
   // Tạo danh sách ngày trong tuần
@@ -63,12 +71,12 @@ export class DetailComponent implements OnInit {
 
   // Lấy danh sách rạp từ API
   getCinemas(): void {
-    this.cinemaService
+    this.detailService
       .getAllCinemas()
       .then((response) => {
         this.cinemas = response.data.data;
       })
-      .catch((error) => console.error('Error fetching cinemas:', error));
+      .catch((err) => console.error('Error fetching cinemas:', err));
   }
 
   // Gọi API showtimes
@@ -80,23 +88,21 @@ export class DetailComponent implements OnInit {
     const cinemaId = this.selectedCinema?.id || null;
     // console.log(this.movieId, '+', cinemaId, '+', date);
 
-    this.cinemaService
+    this.detailService
       .getShowtimes(Number(this.movieId), cinemaId, date)
       .then((response) => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         this.showtimes = response.data.data || [];
       })
       .catch((error) => console.error('Error fetching showtimes:', error));
   }
 
-  // Chọn ngày
   selectDay(day: { name: string; date: Date; isToday: boolean }): void {
     this.selectedDay = day;
     this.fetchShowtimes();
   }
 
-  // Chọn rạp
-  selectCinema(cinema: any): void {
+  selectCinema(cinema: any | null): void {
     this.selectedCinema = cinema;
     this.fetchShowtimes();
   }
@@ -109,24 +115,43 @@ export class DetailComponent implements OnInit {
   }
 
   // Fetch seat data when a showtime button is clicked
-  openModal(cinemaId: number): void {
-    this.cinemaService
-      .getSeats(cinemaId)
+  openModal(showtime: any): void {
+    this.movieTitle = showtime?.movie.title || '';
+    this.showtime = `${formatTime(showtime.timeStart)} ~ ${formatTime(
+      showtime.timeEnd
+    )}`;
+    this.date = this.selectedDay?.date.toLocaleDateString('en-GB') || '';
+    this.cinemaName = showtime.cinema?.name || '';
+    this.showtimeId = showtime.id;
+    this.cinemaId = showtime.cinema?.id || 0;
+
+    this.detailService
+      .getSeats(this.cinemaId)
       .then((response) => {
         this.seats = response.data.data;
-        console.log(this.seats);
+        // console.log(this.seats);
         this.isModalOpen = true;
       })
       .catch((error) => console.error('Error fetching seats:', error));
+
+    // Cập nhật CartService với thông tin phim và showtime
+    this.cartService.setMovieDetails(
+      this.movieTitle,
+      this.showtime,
+      this.date,
+      this.cinemaName,
+      Number(this.movieId),
+      Number(this.showtimeId),
+      Number(this.cinemaId)
+    );
   }
 
   closeModal(): void {
     this.isModalOpen = false;
   }
 
-  handleSeatSelection(selectedSeats: any[]): void {
-    console.log('Selected seats:', selectedSeats);
-    // Handle seat selection logic, e.g., save to the server or proceed to checkout
+  handleSeatSelection(): void {
+    // console.log('Selected seats:', selectedSeats);
     this.closeModal();
   }
 }

@@ -130,7 +130,11 @@
             <!-- Nút "Tất cả" -->
             <div
               class="py-2 px-4 flex items-center gap-2 bg-gray-200 rounded-lg cursor-pointer"
-              [ngClass]="{ 'bg-[#e53637] text-white': !selectedCinema }"
+              [ngClass]="{
+                'bg-[#e53637] text-white':
+                  selectedCinema === null || !selectedCinema,
+                'bg-gray-200 text-gray-800': selectedCinema !== null
+              }"
               (click)="selectCinema(null)"
             >
               All
@@ -142,7 +146,7 @@
               class="py-2 px-4 flex items-center gap-2 bg-gray-200 rounded-lg cursor-pointer"
               [ngClass]="{
                 'bg-[#e53637] text-white': selectedCinema?.id === cinema.id,
-                'bg-gray-200 text-gray-800': selectedCinema?.id !== cinema.id
+                'bg-gray-200 text-gray-800': selectedCinema?.id !== cinema.id,
               }"
               (click)="selectCinema(cinema)"
             >
@@ -181,7 +185,7 @@
               </div>
               <div class="flex gap-2">
                 <button
-                  (click)="openModal(showtime.cinema.id)"
+                  (click)="openModal(showtime)"
                   class="py-2 px-4 bg-blue-100 text-gray-700 rounded-lg"
                 >
                   {{ showtime?.timeStart | date : "shortTime" }} ~
@@ -196,7 +200,7 @@
             *ngIf="isModalOpen"
             [seats]="seats"
             (onClose)="closeModal()"
-            (onConfirm)="handleSeatSelection($event)"
+            (onConfirm)="handleSeatSelection()"
           ></app-seat-modal>
 
           <!-- Thông báo không có lịch chiếu -->

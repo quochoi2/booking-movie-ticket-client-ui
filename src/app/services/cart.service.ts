@@ -19,7 +19,6 @@ export class CartService {
     cinemaId: 0,
   });
 
-  // Cung cấp Observable để các component có thể subscribe và theo dõi thay đổi
   cart$ = this.cartSubject.asObservable();
 
   constructor() {}
@@ -29,32 +28,55 @@ export class CartService {
     title: string,
     showtime: string,
     date: string,
-    cinema: string
+    cinema: string,
+    movieId: number,
+    showtimeId: number,
+    cinemaId: number
   ): void {
     const currentCart = this.cartSubject.value;
-    const updatedCart = { ...currentCart, title, showtime, date, cinema };
+    const updatedCart = {
+      ...currentCart,
+      title,
+      showtime,
+      date,
+      cinema,
+      movieId,
+      showtimeId,
+      cinemaId,
+    };
     this.cartSubject.next(updatedCart);
+    console.log('Cart updated:', updatedCart);
   }
 
-  // Cập nhật thông tin ghế vào cart
-  setSeats(seats: string[]): void {
+  // Cập nhật thông tin ghế vào cart và tính lại tổng giá
+  setSeats(seats: { seatNumber: string; price: number }[]): void {
     const currentCart = this.cartSubject.value;
     const updatedCart = { ...currentCart, seats };
+    updatedCart.totalPrice = this.calculateTotalPrice(updatedCart);
     this.cartSubject.next(updatedCart);
+    console.log('Seats updated:', updatedCart);
   }
 
-  // Cập nhật thông tin dịch vụ vào cart
-  setServices(services: string[]): void {
+  // Cập nhật thông tin dịch vụ vào cart và tính lại tổng giá
+  setServices(services: { name: string; price: number }[]): void {
     const currentCart = this.cartSubject.value;
     const updatedCart = { ...currentCart, services };
+    updatedCart.totalPrice = this.calculateTotalPrice(updatedCart);
     this.cartSubject.next(updatedCart);
+    console.log('Services updated:', updatedCart);
   }
 
-  // Cập nhật tổng tiền vào cart
-  setTotalPrice(totalPrice: number): void {
-    const currentCart = this.cartSubject.value;
-    const updatedCart = { ...currentCart, totalPrice };
-    this.cartSubject.next(updatedCart);
+  // Tính tổng tiền dựa trên ghế và dịch vụ
+  private calculateTotalPrice(cart: Cart): number {
+    const seatsTotal = cart.seats.reduce(
+      (total, seat) => total + seat.price,
+      0
+    );
+    const servicesTotal = cart.services.reduce(
+      (total, service) => total + service.price,
+      0
+    );
+    return seatsTotal + servicesTotal;
   }
 
   // Lấy dữ liệu cart

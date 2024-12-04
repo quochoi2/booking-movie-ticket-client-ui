@@ -5,7 +5,7 @@ import { ApiService } from '../utils/api-request';
 @Injectable({
   providedIn: 'root',
 })
-export class CinemaService {
+export class DetailService {
   constructor(private apiService: ApiService) {}
 
   getDetail(movieId: string): Promise<AxiosResponse<any>> {
@@ -31,5 +31,9 @@ export class CinemaService {
 
   getSeats(cinemaId: number): Promise<AxiosResponse<any>> {
     return this.apiService.getNoAuth(`/seat/public/by-cinema/${cinemaId}`);
+  }
+
+  getServices(): Promise<AxiosResponse<any>> {
+    return this.apiService.getNoAuth(`/food/public/search`);
   }
 }

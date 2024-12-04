@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 
 // App Components
 import { AppComponent } from './app.component';
@@ -17,6 +18,7 @@ import { DetailComponent } from './pages/detail/detail.component';
 import { BlogComponent } from './pages/blog/blog.component';
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 import { ModalComponent } from './pages/detail/modal/modal.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,7 @@ import { ModalComponent } from './pages/detail/modal/modal.component';
     BlogComponent,
     ModalComponent,
   ],
-  imports: [AppRoutingModule, BrowserModule],
+  imports: [AppRoutingModule, BrowserModule, CommonModule, RouterModule],
   providers: [],
   bootstrap: [AppComponent],
 })
