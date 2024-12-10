@@ -54,27 +54,6 @@ export class ModalChildestComponent {
       });
   }
 
-  handlePaypalCallback(): void {
-    const params = new URLSearchParams(window.location.search);
-    const paymentId = params.get('paymentId');
-    const payerId = params.get('PayerID');
-
-    console.log('Callback Params:', { paymentId, payerId });
-
-    if (paymentId && payerId) {
-      this.detailService
-        .executePayment(paymentId, payerId)
-        .then((response) => {
-          console.log('Payment Execution Response:', response.data);
-          alert('Payment successful!');
-        })
-        .catch((error) => {
-          console.error('Payment execution error:', error);
-          alert('Payment failed. Please contact support.');
-        });
-    }
-  }
-
   cart: Cart = {
     // Khởi tạo giá trị mặc định cho cart
     title: '',
@@ -102,7 +81,6 @@ export class ModalChildestComponent {
     this.cartService.cart$.subscribe((cart: Cart) => {
       this.cart = cart;
     });
-    this.handlePaypalCallback();
   }
 
   close(): void {

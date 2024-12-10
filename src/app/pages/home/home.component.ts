@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MovieService } from '../../services/movie.service';
+import { DetailService } from '../../services/detail.service';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +17,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private movieService: MovieService,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    private detailService: DetailService
   ) {}
 
   mapMovieData(movie: any): any {
@@ -33,6 +35,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchMovies();
+    this.handlePaypalCallback();
   }
 
   // Gọi API để lấy danh sách phim
@@ -51,6 +54,29 @@ export class HomeComponent implements OnInit {
       .finally(() => {
         this.loading = false;
       });
+  }
+
+  handlePaypalCallback(): void {
+    const params = new URLSearchParams(window.location.search);
+    console.log(window.location.search);
+
+    const paymentId = params.get('paymentId');
+    const payerId = params.get('PayerID');
+
+    console.log('Callback Params:', { paymentId, payerId });
+
+    if (paymentId && payerId) {
+      this.detailService
+        .executePayment(paymentId, payerId)
+        .then((response) => {
+          console.log('Payment Execution Response:', response.data);
+          alert('Payment successful!');
+        })
+        .catch((error) => {
+          console.error('Payment execution error:', error);
+          alert('Payment failed. Please contact support.');
+        });
+    }
   }
 
   // Tạo URL nhúng từ URL gốc
