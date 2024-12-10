@@ -28,7 +28,7 @@
 
     <!-- Seats -->
     <div class="mt-6">
-      <div class="grid grid-cols-10 gap-2 px-[180px]">
+      <div class="grid grid-cols-5 lg:grid-cols-10 gap-2 px-[180px]">
         <!-- Iterate over seat data -->
         <div
           *ngFor="let seat of seats"
@@ -75,7 +75,7 @@
         </p>
       </div>
       <button
-        class="mt-4 w-full bg-[#e53637] text-white py-2 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
+        class="mt-4 w-full bg-[#e53637] select-none text-white py-2 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
         (click)="confirmSelection()"
         [disabled]="!canConfirmSelection()"
       >
@@ -84,3 +84,9 @@
     </div>
   </div>
 </div>
+
+<app-modal-child
+  *ngIf="isModal"
+  [services]="services"
+  (onClose)="closeModalService()"
+></app-modal-child>

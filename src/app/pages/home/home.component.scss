@@ -12,3 +12,19 @@ body.modal-open *:not(.modal-content) {
 .modal-content {
   pointer-events: auto;
 }
+
+.product__item__text h5 {
+  display: -webkit-box; /* Sử dụng flexbox để kiểm soát các dòng văn bản */
+  -webkit-box-orient: vertical; /* Đặt hướng của các dòng văn bản theo chiều dọc */
+  overflow: hidden; /* Ẩn phần văn bản thừa */
+  -webkit-line-clamp: 2; /* Giới hạn số dòng là 2 */
+  text-overflow: ellipsis; /* Hiển thị dấu ba chấm khi văn bản quá dài */
+  white-space: normal; /* Đảm bảo văn bản được chia thành nhiều dòng */
+}
+
+.product__item__text {
+  height: 108px; /* Cố định chiều cao của div chứa tên phim */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Đảm bảo nội dung căn trên */
+}

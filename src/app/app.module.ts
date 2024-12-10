@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 // App Components
 import { AppComponent } from './app.component';
@@ -19,6 +20,8 @@ import { BlogComponent } from './pages/blog/blog.component';
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 import { ModalComponent } from './pages/detail/modal/modal.component';
 import { CommonModule } from '@angular/common';
+import { ModalChildComponent } from './pages/detail/modal/modal-child/modal-child.component';
+import { ModalChildestComponent } from './pages/detail/modal/modal-child/modal-childest/modal-childest.component';
 
 @NgModule({
   declarations: [
@@ -32,8 +35,16 @@ import { CommonModule } from '@angular/common';
     DetailComponent,
     BlogComponent,
     ModalComponent,
+    ModalChildComponent,
+    ModalChildestComponent,
   ],
-  imports: [AppRoutingModule, BrowserModule, CommonModule, RouterModule],
+  imports: [
+    AppRoutingModule,
+    BrowserModule,
+    CommonModule,
+    RouterModule,
+    FormsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

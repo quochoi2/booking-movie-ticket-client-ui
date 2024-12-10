@@ -259,30 +259,18 @@
   <div class="container mx-auto">
     <div class="row flex flex-wrap">
       <div class="w-full">
-        <!-- isrelease === 1 -->
+        <!-- movies: isrelease === 1 -->
         <div class="trending__product mb-10">
           <div class="flex justify-between items-center mb-6">
-            <div class="">
-              <div class="section-title">
-                <h4 class="text-white text-[25px] font-bold">Not Release</h4>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4">
-              <div class="btn__all text-right">
-                <a
-                  href="#"
-                  class="primary-btn text-white bg-red-600 px-4 py-2 rounded hover:bg-red-500"
-                  >View All <span class="arrow_right"></span
-                ></a>
-              </div>
+            <div class="section-title">
+              <h4 class="text-white text-[25px] font-bold">Movies</h4>
             </div>
           </div>
 
           <div class="row flex flex-wrap -mx-2">
-            <!-- Product Card -->
             <div
               class="col-lg-3 col-md-6 col-sm-6 px-2 mb-6"
-              *ngFor="let movie of isReleaseMovies"
+              *ngFor="let movie of movies"
             >
               <div
                 class="product__item bg-[#1c1d3b] rounded-lg overflow-hidden shadow-lg"
@@ -293,15 +281,11 @@
                   (mouseenter)="movie.showPlayButton = true"
                   (mouseleave)="movie.showPlayButton = false"
                 >
-                  <!-- Play Button -->
                   <div
                     *ngIf="movie.showPlayButton"
-                    class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-100"
+                    class="absolute inset-0 bg-black/50 flex items-center justify-center"
                   >
-                    <button
-                      *ngIf="movie.showPlayButton"
-                      (click)="openVideo(movie.video)"
-                    >
+                    <button (click)="openVideo(movie.video)">
                       <svg
                         class="w-12 h-12 fill-white"
                         xmlns="http://www.w3.org/2000/svg"
@@ -313,47 +297,13 @@
                       </svg>
                     </button>
                   </div>
-
-                  <!-- movie Info -->
                   <div
-                    class="absolute top-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded"
+                    class="absolute bottom-2 right-2 text-xs text-white bg-black/50 px-2 py-1 rounded"
                   >
-                    {{ movie.rating }}
-                  </div>
-                  <div
-                    class="absolute top-2 right-2 text-xs text-white bg-black/50 px-2 py-1 rounded flex items-center space-x-1 gap-1"
-                  >
-                    <svg
-                      class="w-4 h-4 fill-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                    >
-                      <path
-                        d="M123.6 391.3c12.9-9.4 29.6-11.8 44.6-6.4c26.5 9.6 56.2 15.1 87.8 15.1c124.7 0 208-80.5 208-160s-83.3-160-208-160S48 160.5 48 240c0 32 12.4 62.8 35.7 89.2c8.6 9.7 12.8 22.5 11.8 35.5c-1.4 18.1-5.7 34.7-11.3 49.4c17-7.9 31.1-16.7 39.4-22.7zM21.2 431.9c1.8-2.7 3.5-5.4 5.1-8.1c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208s-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6c-15.1 6.6-32.3 12.6-50.1 16.1c-.8 .2-1.6 .3-2.4 .5c-4.4 .8-8.7 1.5-13.2 1.9c-.2 0-.5 .1-.7 .1c-5.1 .5-10.2 .8-15.3 .8c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4c4.1-4.2 7.8-8.7 11.3-13.5c1.7-2.3 3.3-4.6 4.8-6.9l.3-.5z"
-                      />
-                    </svg>
-                    11
-                  </div>
-                  <div
-                    class="absolute bottom-2 right-2 text-xs text-white bg-black/50 px-2 py-1 rounded flex items-center gap-1 space-x-1"
-                  >
-                    <svg
-                      class="w-4 h-4 fill-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 576 512"
-                    >
-                      <path
-                        d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"
-                      />
-                    </svg>
-                    9141
+                    Rating: {{ movie.rating }}
                   </div>
                 </div>
                 <div class="product__item__text p-4">
-                  <ul class="flex space-x-2 text-sm text-gray-400 mb-2 p-0">
-                    <li class="bg-gray-600/20 px-2 py-1 rounded">Active</li>
-                    <li class="bg-gray-600/20 px-2 py-1 rounded">Movie</li>
-                  </ul>
                   <h5 class="text-white text-sm font-bold">
                     <a
                       [href]="'/detail/' + movie.id"
@@ -366,32 +316,33 @@
               </div>
             </div>
           </div>
-          <!-- Modal for Video -->
-          <div
-            *ngIf="isModalOpen"
-            class="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
-          >
-            <div class="relative bg-black rounded-lg overflow-hidden">
-              <button
-                class="absolute top-2 right-2 text-white text-xl"
-                (click)="closeVideo()"
-              >
-                ✖
-              </button>
-              <iframe
-                *ngIf="video"
-                [src]="video"
-                frameborder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-                class="w-[70vw] h-[70vh]"
-              ></iframe>
-            </div>
+        </div>
+
+        <!-- Modal for Video -->
+        <div
+          *ngIf="isModalOpen"
+          class="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+        >
+          <div class="relative bg-black rounded-lg overflow-hidden">
+            <button
+              class="absolute top-2 right-2 text-white text-xl"
+              (click)="closeVideo()"
+            >
+              ✖
+            </button>
+            <iframe
+              *ngIf="videoUrl"
+              [src]="sanitizer.bypassSecurityTrustResourceUrl(videoUrl)"
+              frameborder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              class="w-[70vw] h-[70vh]"
+            ></iframe>
           </div>
         </div>
 
         <!-- isrelease === 0 -->
-        <div class="popular__product">
+        <!-- <div class="popular__product">
           <div class="row flex justify-between items-center mb-6">
             <div class="col-lg-8 col-md-8 col-sm-8">
               <div class="section-title">
@@ -491,7 +442,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

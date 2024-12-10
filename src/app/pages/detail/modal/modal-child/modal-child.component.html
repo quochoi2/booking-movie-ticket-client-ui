@@ -1,0 +1,95 @@
+<div
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+>
+  <div
+    class="bg-white rounded-lg w-[50%] max-w-4xl p-6 shadow-lg h-[90%] flex flex-col"
+  >
+    <!-- Header -->
+    <div class="flex justify-between items-center border-b pb-4">
+      <h2 class="text-lg font-semibold text-gray-800">Service Selection</h2>
+      <button
+        class="text-gray-400 hover:text-red-500 focus:outline-none"
+        (click)="close()"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Scrollable Services List -->
+    <div class="mt-6 flex-grow overflow-y-auto">
+      <div class="space-y-4">
+        <!-- Service Item -->
+        <div
+          *ngFor="let service of services"
+          class="flex items-center justify-between border-b px-5"
+        >
+          <div>
+            <h3 class="text-base font-semibold text-gray-800">
+              {{ service.name }}
+            </h3>
+            <p class="text-sm text-gray-500">
+              {{ service.price | currency }}
+            </p>
+          </div>
+
+          <!-- Quantity Controls -->
+          <div class="flex items-center space-x-2">
+            <button
+              class="bg-gray-200 select-none hover:bg-gray-300 text-gray-800 w-8 h-8 rounded-full focus:outline-none"
+              (click)="decreaseQuantity(service)"
+            >
+              -
+            </button>
+            <span class="text-lg font-semibold select-none">{{
+              service.quantity || 0
+            }}</span>
+            <button
+              class="bg-gray-200 select-none hover:bg-gray-300 text-gray-800 w-8 h-8 rounded-full focus:outline-none"
+              (click)="increaseQuantity(service)"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Services Available -->
+    <div *ngIf="services.length === 0" class="mt-6 text-center">
+      <p class="text-gray-500">No services available.</p>
+    </div>
+
+    <!-- Total and Submit -->
+    <div class="mt-6 border-t pt-4">
+      <div class="flex justify-between items-center text-gray-800">
+        <h4 class="text-lg font-semibold">Provisional:</h4>
+        <p class="text-xl font-semibold text-red-600">
+          {{ getTotal() | currency }}
+        </p>
+      </div>
+
+      <button
+        class="mt-4 w-full bg-[#e53637] text-white py-2 rounded-lg text-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+        (click)="submit()"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+</div>
+
+<app-modal-childest *ngIf="isModal" (onClose)="closePaymentModal()">
+</app-modal-childest>

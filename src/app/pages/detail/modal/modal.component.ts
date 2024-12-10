@@ -11,10 +11,10 @@ export class ModalComponent {
   @Input() seats: any[] = []; // Seat data passed as an input
   @Output() onClose = new EventEmitter<void>(); // Emit event to close modal
 
-  services: any[] = [];
-
-  isModal: boolean = false;
   selectedSeats: any[] = [];
+
+  services: any[] = [];
+  isModal: boolean = false; // To track if the new modal is open
 
   constructor(
     private cartService: CartService,
@@ -23,6 +23,14 @@ export class ModalComponent {
 
   // submit
   confirmSelection(): void {
+    this.detailService
+      .getServices()
+      .then((response) => {
+        // console.log(response.data.data);
+        this.services = response.data.data || [];
+        this.isModal = true;
+      })
+      .catch((error) => console.error('Error fetching services:', error));
     this.cartService.setSeats(this.selectedSeats); // add infor of seats into cartservice
   }
 

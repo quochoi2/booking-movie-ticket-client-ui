@@ -9,15 +9,14 @@ import { MovieService } from '../../services/movie.service';
 })
 export class HomeComponent implements OnInit {
   isModalOpen: boolean = false;
-  video: SafeResourceUrl | null = null;
-  isReleaseMovies: any[] = [];
-  notReleaseMovies: any[] = [];
+  videoUrl: string | null = null;
+  movies: any = [];
   loading: boolean = true;
   error: string | null = null;
 
   constructor(
-    private sanitizer: DomSanitizer,
-    private movieService: MovieService
+    private movieService: MovieService,
+    public sanitizer: DomSanitizer
   ) {}
 
   mapMovieData(movie: any): any {
@@ -43,8 +42,7 @@ export class HomeComponent implements OnInit {
       .getAll()
       .then((response) => {
         const movies = response.data.data;
-        this.processReleaseMovies(movies);
-        this.processNotReleaseMovies(movies);
+        this.movies = movies.map((movie: any) => this.mapMovieData(movie));
       })
       .catch((error) => {
         this.error = 'Failed to load movies. Please try again later.';
@@ -55,34 +53,15 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  processReleaseMovies(movies: any[]): void {
-    this.isReleaseMovies = movies
-      .filter((movie: any) => movie.isRelease === 0)
-      .map((movie: any) => this.mapMovieData(movie));
+  // Tạo URL nhúng từ URL gốc
+  createEmbedUrl(url: string): string {
+    const videoId = this.extractVideoId(url); // Lấy videoId từ URL
+    return `https://www.youtube.com/embed/${videoId}`;
   }
 
-  processNotReleaseMovies(movies: any[]): void {
-    this.notReleaseMovies = movies
-      .filter((movie: any) => movie.isRelease === 1)
-      .map((movie: any) => this.mapMovieData(movie));
-  }
-
-  openVideo(url: string): void {
-    this.isModalOpen = true;
-    const video = this.getVideoUrl(url);
-    this.video = this.sanitizer.bypassSecurityTrustResourceUrl(video);
-    document.body.classList.add('modal-open');
-  }
-
-  closeVideo(): void {
-    this.isModalOpen = false;
-    this.video = null;
-    document.body.classList.remove('modal-open');
-  }
-
-  // Chuyển URL video thành dạng embed
-  getVideoUrl(url: string): string {
-    let videoId: string = '';
+  // Tách videoId từ URL YouTube
+  extractVideoId(url: string): string {
+    let videoId = '';
     if (url.includes('youtu.be')) {
       const match = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
       if (match) videoId = match[1];
@@ -92,6 +71,21 @@ export class HomeComponent implements OnInit {
       );
       if (match) videoId = match[1];
     }
-    return `https://www.youtube.com/embed/${videoId}`;
+    return videoId;
+  }
+
+  // Mở modal video
+  openVideo(url: string): void {
+    this.isModalOpen = true;
+    this.videoUrl = this.createEmbedUrl(url);
+    // console.log('Embed video URL:', this.videoUrl);
+    document.body.classList.add('modal-open');
+  }
+
+  // Đóng modal video
+  closeVideo(): void {
+    this.isModalOpen = false;
+    this.videoUrl = null;
+    document.body.classList.remove('modal-open');
   }
 }
