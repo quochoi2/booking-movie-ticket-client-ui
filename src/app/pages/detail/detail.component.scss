@@ -9,6 +9,32 @@
   text-decoration: underline; /* Hiệu ứng hover */
 }
 
+//
+.description-container {
+  position: relative;
+}
+
+.truncated {
+  line-height: 25px; /* Giữ line-height là 25px */
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* Giới hạn hiển thị 4 dòng */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 100px; /* Chiều cao phù hợp với 4 dòng */
+}
+
+.description-container p {
+  margin-bottom: 0; /* Loại bỏ margin mặc định của <p> */
+  line-height: 25px; /* Đảm bảo line-height luôn 25px */
+}
+
+/* Nếu không cắt */
+.description-container p:not(.truncated) {
+  line-height: 25px; /* Giữ line-height khi không cắt */
+}
+
+//
+
 .modal {
   position: fixed;
   top: 0;

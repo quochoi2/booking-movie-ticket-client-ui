@@ -30,6 +30,11 @@ export class DetailComponent implements OnInit {
   showtimeId: number = 0;
   cinemaId: number = 0;
 
+  description: string = '';
+  isTruncated: boolean = true;
+  truncatedDescription: string = '';
+  buttonText: string = '[Read more]';
+
   constructor(
     private detailService: DetailService,
     private route: ActivatedRoute,
@@ -43,12 +48,40 @@ export class DetailComponent implements OnInit {
     this.getCinemas();
   }
 
+  // Hàm để cắt hoặc hiển thị toàn bộ nội dung
+  setTruncatedDescription(): void {
+    if (this.description.length > 200) {
+      this.truncatedDescription = this.description.substring(0, 365) + '...';
+      this.isTruncated = true;
+      this.buttonText = '[Read more]';
+    } else {
+      this.truncatedDescription = this.description;
+      this.isTruncated = false;
+      this.buttonText = '';
+    }
+  }
+
+  // Hàm để thay đổi trạng thái khi nhấp nút
+  toggleReadMore(): void {
+    this.isTruncated = !this.isTruncated;
+    if (this.isTruncated) {
+      this.truncatedDescription = this.description.substring(0, 365) + '...';
+      this.buttonText = '[Read more]';
+    } else {
+      this.truncatedDescription = this.description;
+      this.buttonText = '[Read less]';
+    }
+  }
+
   // Lấy chi tiết phim
   getMovieDetails(movieId: string): void {
     this.detailService
       .getDetail(movieId)
       .then((response: any) => {
         this.movie = response.data.data;
+        // Once movie details are fetched, set the description
+        this.description = this.movie?.description || '';
+        this.setTruncatedDescription();
       })
       .catch((err) => console.error('Error fetching movie detail:', err));
   }
@@ -129,7 +162,7 @@ export class DetailComponent implements OnInit {
       .getSeats(this.cinemaId)
       .then((response) => {
         this.seats = response.data.data;
-        // console.log(this.seats);
+        console.log(this.seats);
         this.isModalOpen = true;
       })
       .catch((error) => console.error('Error fetching seats:', error));

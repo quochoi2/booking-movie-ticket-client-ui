@@ -7,7 +7,7 @@ interface Cart {
   showtime: string; // Giờ chiếu
   date: string; // Ngày chiếu
   cinema: string; // Rạp chiếu phim
-  seats: { seatNumber: string; price: number }[]; // Danh sách ghế đã chọn
+  seats: { id: number; seatNumber: string; price: number }[]; // Danh sách ghế đã chọn
   totalSeatPrice: number; // Tổng giá của các ghế
   services: { name: string; price: number; quantity: number }[]; // Danh sách dịch vụ đã chọn
   totalServicePrice: number; // Tổng giá của các dịch vụ
@@ -15,7 +15,7 @@ interface Cart {
   movieId: number; // ID phim
   showtimeId: number; // ID giờ chiếu
   cinemaId: number; // ID rạp chiếu
-  email: string;
+  email: string; // Email
 }
 
 @Injectable({
@@ -81,7 +81,7 @@ export class CartService {
   }
 
   // Cập nhật thông tin ghế vào giỏ hàng và tính lại tổng giá tiền của ghế
-  setSeats(seats: { seatNumber: string; price: number }[]): void {
+  setSeats(seats: { id: number; seatNumber: string; price: number }[]): void {
     const currentCart = this.cartSubject.value; // Lấy giá trị hiện tại của cart
     const totalSeatPrice = seats.reduce((total, seat) => total + seat.price, 0); // Tính tổng giá của các ghế
     const updatedCart = { ...currentCart, seats, totalSeatPrice }; // Cập nhật thông tin ghế và tổng giá ghế

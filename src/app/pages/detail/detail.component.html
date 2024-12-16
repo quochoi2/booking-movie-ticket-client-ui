@@ -48,12 +48,19 @@
               </div>
               <span>1.029 Votes</span>
             </div>
-            <p>
-              {{
-                movie?.description ||
-                  "Every human inhabiting the world of Alcia is branded by a “Count” or a number written on their body. For Hina’s mother, her total drops to 0 and she’s pulled into the Abyss, never to be seen again. But her mother’s last words send Hina on a quest to find a legendary hero from the Waste War - the fabled Ace!"
-              }}
-            </p>
+            <div class="description-container">
+              <p [ngClass]="{ truncated: isTruncated }">
+                {{ truncatedDescription }}
+              </p>
+              <button
+                class="absolute bottom-[2px] right-[16px] text-white"
+                *ngIf="isTruncated || !isTruncated"
+                (click)="toggleReadMore()"
+              >
+                {{ buttonText }}
+              </button>
+            </div>
+
             <div class="anime__details__widget">
               <div class="row">
                 <div class="col-lg-6 col-md-6">

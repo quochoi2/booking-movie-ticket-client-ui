@@ -37,12 +37,56 @@
           </nav>
         </div>
       </div>
-      <div class="col-lg-2">
+      <div class="col-lg-2 relative">
         <div class="header__right">
-          <a href="#" class="search-switch"
-            ><span class="icon_search"></span
-          ></a>
+          <!-- Search Icon -->
+          <a href="#" class="search-switch" (click)="toggleSearch()">
+            <span class="icon_search"></span>
+          </a>
           <a href="./login.html"><span class="icon_profile"></span></a>
+        </div>
+
+        <!-- Search Input -->
+        <div class="search-input-container" *ngIf="showSearch">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Enter name of movie..."
+            (input)="onSearch($event)"
+            [(ngModel)]="searchTerm"
+          />
+
+          <!-- Movie Results -->
+          <div class="movie-results" *ngIf="movies.length > 0">
+            <h5>PHIM ĐANG CHIẾU</h5>
+            <div class="movie-list">
+              <div *ngFor="let movie of movies" class="movie-card">
+                <img
+                  [src]="movie.image"
+                  alt="{{ movie.title }}"
+                  class="movie-image"
+                />
+                <div class="movie-info">
+                  <h4>{{ movie.title }}</h4>
+                  <p>{{ movie.genre }}</p>
+                  <p class="rating">
+                    <span>⭐ {{ movie.rating }}</span>
+                    <span class="status">📡 {{ movie.status }}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Message when no movies are found -->
+          <div
+            *ngIf="movies.length === 0 && searchTerm.trim() !== ''"
+            class="w-[300px] bg-white rounded-md flex justify-center items-center px-4 py-3 mt-[10px]"
+          >
+            <p class="m-0">
+              No movies were found matching your keywords "{{ searchTerm }}"
+            </p>
+          </div>
         </div>
       </div>
     </div>

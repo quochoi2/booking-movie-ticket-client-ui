@@ -3,7 +3,7 @@ export interface Cart {
   showtime: string;
   date: string;
   cinema: string;
-  seats: { seatNumber: string; price: number }[];
+  seats: { id: number; seatNumber: string; price: number }[];
   totalSeatPrice: number;
   services: { name: string; price: number; quantity: number }[];
   totalServicePrice: number;
