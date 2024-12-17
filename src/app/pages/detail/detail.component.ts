@@ -162,7 +162,7 @@ export class DetailComponent implements OnInit {
       .getSeats(this.cinemaId)
       .then((response) => {
         this.seats = response.data.data;
-        console.log(this.seats);
+        // console.log(this.seats);
         this.isModalOpen = true;
       })
       .catch((error) => console.error('Error fetching seats:', error));

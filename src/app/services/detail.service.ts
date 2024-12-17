@@ -37,21 +37,12 @@ export class DetailService {
     return this.apiService.getNoAuth(`/food/public/search`);
   }
 
-  sendEmail(obj: any): Promise<AxiosResponse<any>> {
-    const data = {
-      to: obj.email,
-      subject: 'Xác nhận đơn hàng của bạn',
-      obj: obj,
-    };
-
-    return this.apiService.postNoAuth('/send-test-email', data);
-  }
-
   createPayment(cart: any): Promise<AxiosResponse<any>> {
     const payload = {
       amount: cart.totalPrice,
       currency: 'USD',
       description: `Payment for movie ticket: ${cart.title}`,
+      cart: cart,
     };
 
     return this.apiService.postNoAuth('/payment/create', payload);
