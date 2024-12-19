@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { MovieService } from '../../services/movie.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -13,10 +14,21 @@ export class HeaderComponent implements OnInit {
   movies: any[] = [];
   searchTerm: string = ''; // Store the search term
   searchSubject: Subject<string> = new Subject<string>();
+  isLoginModalVisible = false;
 
-  constructor(private movieService: MovieService) {}
+  user: any = null;
+  showLogoutButton = false;
+
+  constructor(
+    private movieService: MovieService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
+    // Subscribe vào user$ để nhận thông tin người dùng
+    this.userService.user$.subscribe((user) => {
+      this.user = user;
+    });
     // Subscribe to search term changes with debounce
     this.searchSubject
       .pipe(
@@ -70,5 +82,25 @@ export class HeaderComponent implements OnInit {
     this.movieService.getAll().then((response: any) => {
       this.movies = response.data;
     });
+  }
+
+  // login
+  openLoginModal() {
+    this.isLoginModalVisible = true;
+  }
+
+  closeLoginModal() {
+    this.isLoginModalVisible = false;
+  }
+
+  // logout
+  toggleLogout(): void {
+    this.showLogoutButton = !this.showLogoutButton;
+  }
+
+  logout(): void {
+    localStorage.removeItem('accessToken');
+    this.userService.setUser(null);
+    this.showLogoutButton = false;
   }
 }

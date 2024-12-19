@@ -1,0 +1,37 @@
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+  *ngIf="isVisible"
+>
+  <!-- Modal -->
+  <div
+    class="bg-white w-96 rounded-lg shadow-lg overflow-hidden transform transition-all scale-100"
+  >
+    <!-- Modal Header -->
+    <div class="bg-gray-800 text-white px-4 py-3 flex justify-between">
+      <h3 class="text-lg font-semibold">Đăng Nhập</h3>
+      <button (click)="closeModal()" class="text-gray-400 hover:text-white">
+        &times;
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="p-4">
+      <p class="text-sm text-gray-600 mb-4">
+        Chọn một phương thức để đăng nhập vào hệ thống.
+      </p>
+
+      <!-- Login with Google -->
+      <button
+        (click)="loginWithGoogle()"
+        class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+      >
+        <img
+          src="https://developers.google.com/identity/images/g-logo.png"
+          alt="Google Logo"
+          class="w-6 h-6"
+        />
+        Đăng nhập với Google
+      </button>
+    </div>
+  </div>
+</div>

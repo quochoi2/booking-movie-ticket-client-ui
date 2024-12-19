@@ -22,6 +22,7 @@ import { ModalComponent } from './pages/detail/modal/modal.component';
 import { CommonModule } from '@angular/common';
 import { ModalChildComponent } from './pages/detail/modal/modal-child/modal-child.component';
 import { ModalChildestComponent } from './pages/detail/modal/modal-child/modal-childest/modal-childest.component';
+import { LoginModalComponent } from './layouts/header/login-modal/login-modal.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { ModalChildestComponent } from './pages/detail/modal/modal-child/modal-c
     ModalComponent,
     ModalChildComponent,
     ModalChildestComponent,
+    LoginModalComponent,
   ],
   imports: [
     AppRoutingModule,

@@ -1,7 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { MovieService } from '../../services/movie.service';
 import { DetailService } from '../../services/detail.service';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { UserService } from '../../services/user.service';
+
+export interface CustomJwtPayload extends JwtPayload {
+  fullName: string;
+  email: string;
+  role?: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -18,7 +26,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private movieService: MovieService,
     public sanitizer: DomSanitizer,
-    private detailService: DetailService
+    private detailService: DetailService,
+    private userService: UserService
   ) {}
 
   mapMovieData(movie: any): any {
@@ -36,6 +45,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.fetchMovies();
     this.handlePaypalCallback();
+    this.handleGoogleCallback();
   }
 
   // Gọi API để lấy danh sách phim
@@ -58,12 +68,12 @@ export class HomeComponent implements OnInit {
 
   handlePaypalCallback(): void {
     const params = new URLSearchParams(window.location.search);
-    console.log(window.location.search);
+    // console.log(window.location.search);
 
     const paymentId = params.get('paymentId');
     const payerId = params.get('PayerID');
 
-    console.log('Callback Params:', { paymentId, payerId });
+    // console.log('Callback Params:', { paymentId, payerId });
 
     if (paymentId && payerId) {
       this.detailService
@@ -113,5 +123,26 @@ export class HomeComponent implements OnInit {
     this.isModalOpen = false;
     this.videoUrl = null;
     document.body.classList.remove('modal-open');
+  }
+
+  // Google Callback
+  handleGoogleCallback(): void {
+    const params = new URLSearchParams(window.location.search);
+    let accessToken = params.get('access-token');
+
+    if (!accessToken) {
+      accessToken = localStorage.getItem('accessToken');
+    }
+
+    if (accessToken) {
+      localStorage.setItem('accessToken', accessToken);
+      const decode = jwtDecode<CustomJwtPayload>(accessToken);
+      const user = {
+        fullName: decode.fullName,
+        email: decode.email,
+      };
+      this.userService.setUser(user);
+      // console.log('User Info:', user);
+    }
   }
 }

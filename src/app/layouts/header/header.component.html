@@ -43,7 +43,22 @@
           <a href="#" class="search-switch" (click)="toggleSearch()">
             <span class="icon_search"></span>
           </a>
-          <a href="./login.html"><span class="icon_profile"></span></a>
+          <!-- Profile Icon or User's Name -->
+          <a href="javascript:void(0)" *ngIf="!user" (click)="openLoginModal()">
+            <span class="icon_profile"></span>
+          </a>
+
+          <!-- User's Name with Logout Option -->
+          <div *ngIf="user" class="profile" (click)="toggleLogout()">
+            <span class="text-white cursor-pointer">{{ user.fullName }}</span>
+            <button
+              *ngIf="showLogoutButton"
+              class="logout-button"
+              (click)="logout()"
+            >
+              Logout
+            </button>
+          </div>
         </div>
 
         <!-- Search Input -->
@@ -94,3 +109,9 @@
   </div>
 </header>
 <!-- Header End -->
+
+<!-- Modal -->
+<app-login-modal
+  [isVisible]="isLoginModalVisible"
+  (close)="closeLoginModal()"
+></app-login-modal>

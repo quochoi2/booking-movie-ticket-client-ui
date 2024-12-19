@@ -98,17 +98,56 @@
 }
 
 .header__right {
-  text-align: right;
-  padding: 20px 0 15px;
+  padding: 20px 5px 15px 0;
+  display: flex;
+  justify-content: flex-end;
 
   a {
     display: inline-block;
     font-size: 18px;
     color: $white-color;
     margin-right: 30px;
+    position: relative;
 
     &:last-child {
       margin-right: 0;
+    }
+  }
+
+  .profile {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    .text-white {
+      font-size: 16px;
+      color: $white-color;
+      white-space: nowrap; /* Ngăn tên người dùng xuống dòng */
+      overflow: hidden;
+      text-overflow: ellipsis; /* Hiển thị ... nếu tên quá dài */
+      max-width: 101px; /* Giới hạn độ rộng cho tên */
+    }
+
+    .logout-button {
+      z-index: 40;
+      display: none;
+      position: absolute;
+      top: 45px; /* Đặt nó ngay bên dưới tên người dùng */
+      right: -5px;
+      background-color: #e53637; /* Màu đỏ cho nút logout */
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px; /* Bo góc cho nút */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ cho nút */
+      font-size: 14px; /* Kích thước chữ đẹp hơn */
+    }
+
+    /* Hiển thị nút logout khi người dùng đã click vào tên */
+    .logout-button {
+      display: block;
     }
   }
 }
