@@ -27,7 +27,7 @@ export class UserService {
     if (accessToken) {
       try {
         const decode = jwtDecode<CustomJwtPayload>(accessToken);
-        console.log(decode);
+        // console.log(decode);
         this.userSubject.next(decode);
       } catch (error) {
         console.error('Error decoding accessToken', error);

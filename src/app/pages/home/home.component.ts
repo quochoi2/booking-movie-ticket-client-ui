@@ -4,6 +4,7 @@ import { MovieService } from '../../services/movie.service';
 import { DetailService } from '../../services/detail.service';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { UserService } from '../../services/user.service';
+import { CartService } from '../../services/cart.service';
 
 export interface CustomJwtPayload extends JwtPayload {
   fullName: string;
@@ -27,7 +28,8 @@ export class HomeComponent implements OnInit {
     private movieService: MovieService,
     public sanitizer: DomSanitizer,
     private detailService: DetailService,
-    private userService: UserService
+    private userService: UserService,
+    private cartService: CartService
   ) {}
 
   mapMovieData(movie: any): any {

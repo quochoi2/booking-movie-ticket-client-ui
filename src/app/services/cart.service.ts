@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { BehaviorSubject } from 'rxjs';
 
 // Định nghĩa giao diện Cart (Giỏ hàng)
@@ -42,7 +43,9 @@ export class CartService {
   // Observable để lắng nghe thay đổi của cart
   cart$ = this.cartSubject.asObservable();
 
-  constructor() {}
+  constructor() {
+    this.loadEmailFromStorage();
+  }
 
   // Cập nhật thông tin phim vào giỏ hàng
   setMovieDetails(
@@ -71,12 +74,12 @@ export class CartService {
 
   // Cập nhật thông tin phim vào giỏ hàng
   setEmail(email: string): void {
-    const currentCart = this.cartSubject.value; // Lấy giá trị hiện tại của cart
+    const currentCart = this.cartSubject.value;
     const updatedCart = {
       ...currentCart,
       email,
     };
-    this.cartSubject.next(updatedCart); // Cập nhật giá trị mới vào cart
+    this.cartSubject.next(updatedCart);
     console.log('Thông email đã được cập nhật:', updatedCart);
   }
 
@@ -113,5 +116,24 @@ export class CartService {
   // Lấy thông tin cart hiện tại
   getCart(): Cart {
     return this.cartSubject.value; // Trả về giá trị cart hiện tại
+  }
+
+  loadEmailFromStorage(): void {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      try {
+        const decode = jwtDecode<any>(accessToken);
+        const email = decode.email;
+
+        if (email) {
+          const currentCart = this.cartSubject.value;
+          const updatedCart = { ...currentCart, email };
+          this.cartSubject.next(updatedCart);
+          console.log('Email đã được load và cập nhật vào cart:', updatedCart);
+        }
+      } catch (error) {
+        console.error('Error decoding accessToken', error);
+      }
+    }
   }
 }

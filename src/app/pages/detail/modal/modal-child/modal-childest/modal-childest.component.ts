@@ -10,35 +10,23 @@ import { DetailService } from '../../../../../services/detail.service';
 })
 export class ModalChildestComponent {
   @Output() onClose = new EventEmitter<void>();
-  selectedPaymentMethod: string | null = null;
-  email: string = '';
-  showEmailInput: boolean = false;
+  isLoginModalVisible: boolean = false;
 
-  onPaymentMethodChange() {
-    this.showEmailInput =
-      this.selectedPaymentMethod === 'credit_card' ||
-      this.selectedPaymentMethod === 'paypal';
-    if (!this.showEmailInput) {
-      this.email = '';
-    }
-  }
+  selectedPaymentMethod: string | null = null;
 
   submitPayment() {
-    const paymentInfo = {
-      method: this.selectedPaymentMethod,
-      email: this.showEmailInput ? this.email : null,
-    };
-    console.log('Payment Info:', paymentInfo);
-    if (this.showEmailInput && this.email) {
-      this.cartService.setEmail(this.email);
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      this.isLoginModalVisible = true;
+      return;
     }
+
     if (this.selectedPaymentMethod === 'paypal') {
       this.handlePaypalPayment();
     }
   }
 
   handlePaypalPayment(): void {
-    this.cart.email = this.email; // Set user email into cart data
     this.detailService
       .createPayment(this.cart)
       .then((response) => {
@@ -54,7 +42,6 @@ export class ModalChildestComponent {
   }
 
   cart: Cart = {
-    // Khởi tạo giá trị mặc định cho cart
     title: '',
     showtime: '',
     date: '',
@@ -76,7 +63,6 @@ export class ModalChildestComponent {
   ) {}
 
   ngOnInit(): void {
-    // Đăng ký lắng nghe sự thay đổi của cart
     this.cartService.cart$.subscribe((cart: Cart) => {
       this.cart = cart;
     });
@@ -91,5 +77,10 @@ export class ModalChildestComponent {
     return this.cart.seats && this.cart.seats.length > 0
       ? this.cart.seats.map((seat) => seat.seatNumber).join(', ')
       : null;
+  }
+
+  // login
+  closeLoginModal(): void {
+    this.isLoginModalVisible = false;
   }
 }
