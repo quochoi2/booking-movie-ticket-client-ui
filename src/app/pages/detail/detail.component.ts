@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DetailService } from '../../services/detail.service';
 import { CartService } from '../../services/cart.service';
 import { formatTime } from '../../utils/format-time';
+import { UserService } from '../../services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-detail',
@@ -10,6 +12,9 @@ import { formatTime } from '../../utils/format-time';
   styleUrls: ['./detail.component.scss'],
 })
 export class DetailComponent implements OnInit {
+  Math = Math;
+
+  currentUserId!: number;
   movie: any = null;
   movieId: any = '';
 
@@ -35,10 +40,25 @@ export class DetailComponent implements OnInit {
   truncatedDescription: string = '';
   buttonText: string = '[Read more]';
 
+  comments: any[] = [];
+  currentPage: number = 1;
+  totalPages: number = 1;
+  pageSize: number = 5;
+  newComment: string = '';
+  isLoading: boolean = false;
+
+  newRating: number = 0;
+  hoveredRating: number = 0;
+  stars: number[] = [1, 2, 3, 4, 5];
+
+  isLoggedIn: boolean = false;
+  isLoginModalVisible: boolean = false;
+
   constructor(
     private detailService: DetailService,
     private route: ActivatedRoute,
-    private cartService: CartService
+    private cartService: CartService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +66,76 @@ export class DetailComponent implements OnInit {
     this.getMovieDetails(this.movieId);
     this.generateWeekDays();
     this.getCinemas();
+    this.loadComments(this.currentPage);
+    this.checkLoginStatus();
+    this.currentUserId = this.userService.getUser().id || null;
+  }
+
+  loadComments(page: number = 1): void {
+    this.isLoading = true;
+    this.detailService
+      .getAllComments(this.movieId, page, this.pageSize)
+      .then((res) => {
+        const data = res.data;
+        this.comments = data.comments.map((comment: any) => ({
+          ...comment,
+          user: comment.user || { fullName: 'Anonymous' },
+        }));
+        this.currentPage = data.currentPage;
+        this.totalPages = data.totalPages;
+        this.isLoading = false;
+      })
+      .catch((err) => {
+        console.error('Error loading comments:', err);
+        this.isLoading = false;
+      });
+  }
+
+  // Gửi bình luận mới
+  submitComment(event: Event): void {
+    event.preventDefault();
+
+    if (!this.isLoggedIn) {
+      this.openLoginModal();
+      return;
+    }
+
+    if (!this.newComment.trim()) {
+      alert('Please enter a comment.');
+      return;
+    }
+
+    if (this.newRating < 1 || this.newRating > 5) {
+      alert('Please provide a rating between 1 and 5.');
+      return;
+    }
+
+    const commentData = {
+      movieId: this.movieId,
+      userId: this.userService.getUser().id,
+      content: this.newComment.trim(),
+      rating: this.newRating,
+    };
+
+    this.detailService
+      .createComment(commentData)
+      .then(() => {
+        this.newComment = '';
+        this.newRating = 0;
+        this.loadComments(this.currentPage);
+      })
+      .catch((err) => {
+        console.error('Error creating comment:', err);
+      });
+  }
+
+  // Điều hướng giữa các trang
+  changePage(page: number): void {
+    if (page > 0 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadComments(page);
+      // console.log('Current Page:', this.currentPage);
+    }
   }
 
   // Hàm để cắt hoặc hiển thị toàn bộ nội dung
@@ -186,5 +276,77 @@ export class DetailComponent implements OnInit {
   handleSeatSelection(): void {
     // console.log('Selected seats:', selectedSeats);
     this.closeModal();
+  }
+
+  // login
+  // Mở modal đăng nhập
+  openLoginModal(): void {
+    this.isLoginModalVisible = true;
+  }
+
+  // Đóng modal đăng nhập
+  closeLoginModal(): void {
+    this.isLoginModalVisible = false;
+  }
+
+  // Kiểm tra trạng thái đăng nhập
+  checkLoginStatus(): void {
+    this.isLoggedIn = !!localStorage.getItem('accessToken');
+  }
+
+  // Gọi khi hover vào ngôi sao
+  hoverStar(star: number): void {
+    this.hoveredRating = star;
+  }
+
+  // Gọi khi mouseleave
+  resetHover(): void {
+    this.hoveredRating = 0;
+  }
+
+  // Gọi khi click vào ngôi sao
+  setRating(star: number): void {
+    this.newRating = star;
+  }
+
+  // delete button
+  confirmDeleteComment(
+    movieId: number,
+    commentId: number,
+    userId: number
+  ): void {
+    if (userId !== this.currentUserId) {
+      Swal.fire('Lỗi!', 'Bạn không có quyền xóa bình luận này.', 'error');
+      return;
+    }
+
+    Swal.fire({
+      title: 'Bạn có chắc chắn muốn xóa bình luận này?',
+      text: 'Bạn sẽ không thể khôi phục sau khi xóa!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Có, xóa nó!',
+      cancelButtonText: 'Hủy',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteComment(movieId, commentId);
+      }
+    });
+  }
+
+  deleteComment(movieId: number, commentId: number): void {
+    this.detailService
+      .deleteComment(movieId, commentId)
+      .then(() => {
+        // Update UI after deletion
+        this.comments = this.comments.filter((c) => c.id !== commentId);
+        Swal.fire('Deleted!', 'Your comment has been deleted.', 'success');
+      })
+      .catch((error) => {
+        console.error('Failed to delete comment', error);
+        Swal.fire('Error', 'Could not delete the comment.', 'error');
+      });
   }
 }

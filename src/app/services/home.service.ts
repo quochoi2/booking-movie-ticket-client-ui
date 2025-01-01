@@ -8,9 +8,7 @@ import { ApiService } from '../utils/api-request';
 export class HomeService {
   constructor(private apiService: ApiService) {}
 
-  googleCallback(code: string): Promise<AxiosResponse<any>> {
-    const params = { code };
-    // console.log(params);
-    return this.apiService.getNoAuth(`/provide/google/callback/`, { params });
+  getAllMovies(): Promise<AxiosResponse<any>> {
+    return this.apiService.getNoAuth(`/movie/public/home`);
   }
 }

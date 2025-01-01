@@ -1,0 +1,334 @@
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option bg-[#0b0c2a]">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__links flex">
+          <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+          <a href="./categories.html">Genres</a>
+          <span>Romance</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Product Section Begin -->
+<section class="product-page spad bg-[#0b0c2a]">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="product__page__content">
+          <div class="product__page__title">
+            <div class="row">
+              <div class="col-lg-8 col-md-8 col-sm-6">
+                <div class="section-title">
+                  <h4>Romance</h4>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="product__page__filter">
+                  <p>Order by:</p>
+                  <select>
+                    <option value="">A-Z</option>
+                    <option value="">1-10</option>
+                    <option value="">10-50</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <ng-container *ngIf="movies.length > 0; else noMovies">
+              <div
+                class="col-lg-4 col-md-6 col-sm-6 px-2 mb-0"
+                *ngFor="let movie of movies"
+              >
+                <div
+                  class="product__item bg-[#1c1d3b] rounded-lg overflow-hidden shadow-lg"
+                >
+                  <div
+                    class="product__item__pic relative bg-cover bg-center h-56"
+                    [style.background-image]="'url(' + movie.image + ')'"
+                    (mouseenter)="movie.showPlayButton = true"
+                    (mouseleave)="movie.showPlayButton = false"
+                  >
+                    <div
+                      *ngIf="movie.showPlayButton"
+                      class="absolute inset-0 bg-black/50 flex items-center justify-center"
+                    >
+                      <button (click)="openVideo(movie.video)">
+                        <svg
+                          class="w-12 h-12 fill-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 512 512"
+                        >
+                          <path
+                            d="M106 59.3l320 192c9.9 6 9.9 21.4 0 27.4l-320 192c-10 6-22.9-.9-22.9-13.7V73c0-12.8 12.9-19.7 22.9-13.7z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div
+                      class="absolute bottom-2 right-2 text-xs text-white bg-black/50 px-2 py-1 rounded"
+                    >
+                      Rating: {{ movie.rating }}
+                    </div>
+                  </div>
+                  <div class="product__item__text p-4">
+                    <a
+                      [href]="'/detail/' + movie.id"
+                      class="text-white text-base font-bold hover:text-gray-400 line-clamp-2 overflow-hidden h-[48px]"
+                    >
+                      {{ movie.title }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-template #noMovies>
+              <div class="text-center text-gray-400 w-full">
+                <p class="text-lg">No released movies are available now.</p>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+        <div class="product__pagination">
+          <a
+            (click)="changePage(1)"
+            [class.cursor-not-allowed]="currentPage === 1"
+            [class.opacity-50]="currentPage === 1"
+          >
+            <div class="flex justify-center items-center h-full">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                style="width: 14px; height: 14px; fill: white"
+              >
+                <path
+                  d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z"
+                />
+              </svg>
+            </div>
+          </a>
+          <a
+            (click)="currentPage !== 1 && changePage(currentPage - 1)"
+            [class.cursor-not-allowed]="currentPage === 1"
+            [class.opacity-50]="currentPage === 1"
+          >
+            <div class="flex justify-center items-center h-full">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                style="width: 14px; height: 14px; fill: white"
+              >
+                <path
+                  d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+                ></path>
+              </svg>
+            </div>
+          </a>
+          <button
+            *ngFor="let page of [].constructor(totalPages); let i = index"
+            style="color: white"
+            class="select-none inline-block text-[15px] font-semibold h-[50px] w-[50px] text-center"
+            [ngClass]="{
+              'bg-transparent border-2 border-white text-white rounded-full px-3 py-2':
+                currentPage === i + 1,
+              'text-white': currentPage !== i + 1
+            }"
+            (click)="changePage(i + 1)"
+          >
+            {{ i + 1 }}
+          </button>
+          <a
+            (click)="currentPage !== totalPages && changePage(currentPage + 1)"
+            [class.cursor-not-allowed]="currentPage === totalPages"
+            [class.opacity-50]="currentPage === totalPages"
+          >
+            <div class="flex justify-center items-center h-full">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                style="width: 14px; height: 14px; fill: white"
+              >
+                <path
+                  d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"
+                ></path>
+              </svg>
+            </div>
+          </a>
+          <a
+            (click)="changePage(totalPages)"
+            [class.cursor-not-allowed]="currentPage === totalPages"
+            [class.opacity-50]="currentPage === totalPages"
+          >
+            <div class="flex justify-center items-center h-full">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                style="width: 14px; height: 14px; fill: white"
+              >
+                <path
+                  d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z"
+                />
+              </svg>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Modal for Video -->
+      <div
+        *ngIf="isModalOpen"
+        class="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+      >
+        <div class="relative bg-black rounded-lg overflow-hidden">
+          <button
+            class="absolute top-2 right-2 text-white text-xl"
+            (click)="closeVideo()"
+          >
+            ✖
+          </button>
+          <iframe
+            *ngIf="videoUrl"
+            [src]="sanitizer.bypassSecurityTrustResourceUrl(videoUrl)"
+            frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="w-[70vw] h-[70vh]"
+          ></iframe>
+        </div>
+      </div>
+
+      <!-- content right -->
+      <div class="col-lg-4 col-md-6 col-sm-8">
+        <div class="product__sidebar">
+          <div class="product__sidebar__view">
+            <div class="section-title">
+              <h5>Top Views</h5>
+            </div>
+            <ul class="filter__controls">
+              <li class="active" data-filter="*">Day</li>
+              <li data-filter=".week">Week</li>
+              <li data-filter=".month">Month</li>
+              <li data-filter=".years">Years</li>
+            </ul>
+            <div class="filter__gallery">
+              <div
+                class="product__sidebar__view__item set-bg mix day years"
+                style="background-image: url('img/sidebar/tv-1.jpg')"
+              >
+                <div class="ep">18 / ?</div>
+                <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                <h5><a href="#">Boruto: Naruto next generations</a></h5>
+              </div>
+              <div
+                class="product__sidebar__view__item set-bg mix month week"
+                style="background-image: url('img/sidebar/tv-2.jpg')"
+              >
+                <div class="ep">18 / ?</div>
+                <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                <h5>
+                  <a href="#">The Seven Deadly Sins: Wrath of the Gods</a>
+                </h5>
+              </div>
+              <div
+                class="product__sidebar__view__item set-bg mix week years"
+                style="background-image: url('img/sidebar/tv-3.jpg')"
+              >
+                <div class="ep">18 / ?</div>
+                <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                <h5>
+                  <a href="#">Sword art online alicization war of underworld</a>
+                </h5>
+              </div>
+              <div
+                class="product__sidebar__view__item set-bg mix years month"
+                style="background-image: url('img/sidebar/tv-4.jpg')"
+              >
+                <div class="ep">18 / ?</div>
+                <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                <h5>
+                  <a href="#"
+                    >Fate/stay night: Heaven's Feel I. presage flower</a
+                  >
+                </h5>
+              </div>
+              <div
+                class="product__sidebar__view__item set-bg mix day"
+                style="background-image: url('img/sidebar/tv-5.jpg')"
+              >
+                <div class="ep">18 / ?</div>
+                <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                <h5><a href="#">Fate stay night unlimited blade works</a></h5>
+              </div>
+            </div>
+          </div>
+          <div class="product__sidebar__comment">
+            <div class="section-title">
+              <h5>New Comment</h5>
+            </div>
+            <div class="product__sidebar__comment__item">
+              <div class="product__sidebar__comment__item__pic">
+                <img src="img/sidebar/comment-1.jpg" alt="" />
+              </div>
+              <div class="product__sidebar__comment__item__text">
+                <ul>
+                  <li>Active</li>
+                  <li>Movie</li>
+                </ul>
+                <h5>
+                  <a href="#">The Seven Deadly Sins: Wrath of the Gods</a>
+                </h5>
+                <span><i class="fa fa-eye"></i> 19.141 Viewes</span>
+              </div>
+            </div>
+            <div class="product__sidebar__comment__item">
+              <div class="product__sidebar__comment__item__pic">
+                <img src="img/sidebar/comment-2.jpg" alt="" />
+              </div>
+              <div class="product__sidebar__comment__item__text">
+                <ul>
+                  <li>Active</li>
+                  <li>Movie</li>
+                </ul>
+                <h5><a href="#">Shirogane Tamashii hen Kouhan sen</a></h5>
+                <span><i class="fa fa-eye"></i> 19.141 Viewes</span>
+              </div>
+            </div>
+            <div class="product__sidebar__comment__item">
+              <div class="product__sidebar__comment__item__pic">
+                <img src="img/sidebar/comment-3.jpg" alt="" />
+              </div>
+              <div class="product__sidebar__comment__item__text">
+                <ul>
+                  <li>Active</li>
+                  <li>Movie</li>
+                </ul>
+                <h5><a href="#">Kizumonogatari III: Reiket su-hen</a></h5>
+                <span><i class="fa fa-eye"></i> 19.141 Viewes</span>
+              </div>
+            </div>
+            <div class="product__sidebar__comment__item">
+              <div class="product__sidebar__comment__item__pic">
+                <img src="img/sidebar/comment-4.jpg" alt="" />
+              </div>
+              <div class="product__sidebar__comment__item__text">
+                <ul>
+                  <li>Active</li>
+                  <li>Movie</li>
+                </ul>
+                <h5><a href="#">Monogatari Series: Second Season</a></h5>
+                <span><i class="fa fa-eye"></i> 19.141 Viewes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Product Section End -->

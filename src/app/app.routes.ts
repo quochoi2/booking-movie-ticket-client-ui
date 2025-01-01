@@ -6,6 +6,7 @@ import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { DetailComponent } from './pages/detail/detail.component';
 import { BlogComponent } from './pages/blog/blog.component';
+import { GenreComponent } from './pages/genre/genre.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
       { path: 'detail/:movieId', component: DetailComponent },
+      { path: 'genre', component: GenreComponent },
       { path: 'blog', component: BlogComponent },
     ],
   },

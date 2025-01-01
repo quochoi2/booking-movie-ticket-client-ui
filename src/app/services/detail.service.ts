@@ -59,4 +59,32 @@ export class DetailService {
   cancelPayment(): Promise<AxiosResponse<any>> {
     return this.apiService.getNoAuth('/payment/cancel');
   }
+
+  // comment
+  getAllComments(
+    movieId: number,
+    page: number,
+    pageSize: number
+  ): Promise<AxiosResponse<any>> {
+    return this.apiService.getNoAuth(
+      `/comment/public/byMovieId/${movieId}/paginate?page=${page}&pageSize=${pageSize}`
+    );
+  }
+
+  createComment(data: any): Promise<AxiosResponse<any>> {
+    return this.apiService.postAuth('/comment', data);
+  }
+
+  updateComment(data: any): Promise<AxiosResponse<any>> {
+    return this.apiService.putAuth('/comment/' + data.id, data);
+  }
+
+  deleteComment(
+    movieId: number,
+    commentId: number
+  ): Promise<AxiosResponse<any>> {
+    return this.apiService.deleteAuth(
+      `/comment/delete?movieId=${movieId}&commentId=${commentId}`
+    );
+  }
 }

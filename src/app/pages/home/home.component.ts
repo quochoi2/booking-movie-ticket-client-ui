@@ -4,7 +4,7 @@ import { MovieService } from '../../services/movie.service';
 import { DetailService } from '../../services/detail.service';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { UserService } from '../../services/user.service';
-import { CartService } from '../../services/cart.service';
+import { HomeService } from '../../services/home.service';
 
 export interface CustomJwtPayload extends JwtPayload {
   fullName: string;
@@ -20,7 +20,8 @@ export interface CustomJwtPayload extends JwtPayload {
 export class HomeComponent implements OnInit {
   isModalOpen: boolean = false;
   videoUrl: string | null = null;
-  movies: any = [];
+  releasedMovies: any[] = [];
+  upcomingMovies: any[] = [];
   loading: boolean = true;
   error: string | null = null;
 
@@ -29,7 +30,7 @@ export class HomeComponent implements OnInit {
     public sanitizer: DomSanitizer,
     private detailService: DetailService,
     private userService: UserService,
-    private cartService: CartService
+    private homeService: HomeService
   ) {}
 
   mapMovieData(movie: any): any {
@@ -53,11 +54,15 @@ export class HomeComponent implements OnInit {
   // Gọi API để lấy danh sách phim
   fetchMovies(): void {
     this.loading = true;
-    this.movieService
-      .getAll()
+    this.homeService
+      .getAllMovies()
       .then((response) => {
-        const movies = response.data.data;
-        this.movies = movies.map((movie: any) => this.mapMovieData(movie));
+        this.releasedMovies = response.data.releasedMovies.map((movie: any) =>
+          this.mapMovieData(movie)
+        );
+        this.upcomingMovies = response.data.upcomingMovies.map((movie: any) =>
+          this.mapMovieData(movie)
+        );
       })
       .catch((error) => {
         this.error = 'Failed to load movies. Please try again later.';

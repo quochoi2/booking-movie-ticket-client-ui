@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { jwtDecode, JwtPayload } from 'jwt-decode';
-import { CustomJwtPayload } from '../pages/home/home.component';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +25,7 @@ export class UserService {
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
       try {
-        const decode = jwtDecode<CustomJwtPayload>(accessToken);
+        const decode = jwtDecode<any>(accessToken);
         // console.log(decode);
         this.userSubject.next(decode);
       } catch (error) {
