@@ -17,4 +17,23 @@ export class GenreService {
       `/movie/public/by-release?isRelease=${isRelease}&page=${page}&limit=${pageSize}`
     );
   }
+
+  top5MovieByDay(month: number, day: number): Promise<AxiosResponse<any>> {
+    return this.apiService.getNoAuth('/statistic/public/by-day', {
+      month,
+      day,
+    });
+  }
+
+  top5MovieByWeek(week: number): Promise<AxiosResponse<any>> {
+    return this.apiService.getNoAuth('/statistic/public/by-week', { week });
+  }
+
+  top5MovieByMonth(month: number): Promise<AxiosResponse<any>> {
+    return this.apiService.getNoAuth('/statistic/public/by-month', { month });
+  }
+
+  top5MovieByYear(year: number): Promise<AxiosResponse<any>> {
+    return this.apiService.getNoAuth('/statistic/public/by-year', { year });
+  }
 }

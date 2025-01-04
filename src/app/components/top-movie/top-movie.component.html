@@ -1,0 +1,36 @@
+<div class="product__sidebar">
+  <div class="product__sidebar__view">
+    <div class="section-title">
+      <h5>Top Movies</h5>
+      <!-- Bộ lọc lựa chọn -->
+      <ul class="filter__controls">
+        <li
+          *ngFor="let filter of ['day', 'week', 'month', 'year']"
+          [class.active]="currentFilter === filter"
+          (click)="onFilterChange(filter)"
+        >
+          {{ filter | titlecase }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- Danh sách phim -->
+    <div class="filter__gallery">
+      <div
+        *ngFor="let movie of movies"
+        class="product__sidebar__view__item set-bg"
+        [style.background-image]="'url(' + movie.image + ')'"
+      >
+        <div
+          class="absolute bottom-0 left-0 w-full rounded-bl-[5px] rounded-br-[5px] h-[35%] bg-gradient-to-t from-black to-transparent flex justify-center items-center"
+        >
+          <a
+            class="text-white text-[15px] leading-5 font-semibold line-clamp-2 m-0 px-5"
+          >
+            {{ movie.title }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

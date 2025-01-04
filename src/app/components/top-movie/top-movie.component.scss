@@ -1,0 +1,44 @@
+.filter__controls li {
+  cursor: pointer;
+  display: inline-block;
+  padding: 4px 6px;
+  color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  user-select: none;
+}
+
+.filter__controls li.active {
+  background-color: #e53637;
+  color: white;
+  border-color: #e53637;
+}
+
+.product__sidebar__view__item {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+  color: #333;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.product__sidebar__view__item {
+  position: relative;
+  /* Giữ cho hình ảnh của phim là nền */
+}
+
+.movie-title a {
+  font-size: 16px;
+  color: #fff; /* Màu chữ trắng, nếu muốn */
+  text-decoration: none;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Shadow xám đen nhẹ */
+}
+
+.filter__gallery .product__sidebar__view__item {
+  position: relative;
+  background-position: 0 20%;
+}

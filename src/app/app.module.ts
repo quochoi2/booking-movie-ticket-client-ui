@@ -24,6 +24,7 @@ import { ModalChildComponent } from './pages/detail/modal/modal-child/modal-chil
 import { ModalChildestComponent } from './pages/detail/modal/modal-child/modal-childest/modal-childest.component';
 import { LoginModalComponent } from './layouts/header/login-modal/login-modal.component';
 import { GenreComponent } from './pages/genre/genre.component';
+import { TopMovieComponent } from './components/top-movie/top-movie.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { GenreComponent } from './pages/genre/genre.component';
     ModalChildComponent,
     ModalChildestComponent,
     LoginModalComponent,
+    TopMovieComponent,
   ],
   imports: [
     AppRoutingModule,
