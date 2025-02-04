@@ -4,7 +4,7 @@ import { DetailService } from '../../services/detail.service';
 import { CartService } from '../../services/cart.service';
 import { formatTime } from '../../utils/format-time';
 import { UserService } from '../../services/user.service';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2/dist/sweetalert2.all.js';
 
 @Component({
   selector: 'app-detail',
