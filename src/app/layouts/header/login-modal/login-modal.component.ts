@@ -16,6 +16,6 @@ export class LoginModalComponent {
 
   loginWithGoogle() {
     // Redirect tới URL Google Auth
-    window.location.href = `${environment.BASE_URL}/provide/google/callback`;
+    window.location.href = `${environment.BASE_URL}/provide/google`;
   }
 }
