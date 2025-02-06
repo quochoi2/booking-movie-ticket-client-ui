@@ -8,7 +8,9 @@
   >
     <!-- Modal Header -->
     <div class="bg-gray-800 text-white px-4 py-3 flex justify-between">
-      <h3 class="text-lg font-semibold">Đăng Nhập</h3>
+      <h3 class="text-lg font-semibold">
+        {{ isLogin ? "Đăng Nhập" : "Đăng Ký" }}
+      </h3>
       <button (click)="closeModal()" class="text-gray-400 hover:text-white">
         &times;
       </button>
@@ -16,22 +18,135 @@
 
     <!-- Modal Body -->
     <div class="p-4">
-      <p class="text-sm text-gray-600 mb-4">
-        Chọn một phương thức để đăng nhập vào hệ thống.
-      </p>
+      <!-- Login Form -->
+      <div *ngIf="isLogin">
+        <form (submit)="login()">
+          <div class="mb-4">
+            <label
+              for="username"
+              class="block text-sm font-medium text-gray-700"
+              >Tên đăng nhập</label
+            >
+            <input
+              id="username"
+              type="text"
+              [(ngModel)]="loginData.username"
+              name="username"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-700"
+              >Mật khẩu</label
+            >
+            <input
+              id="password"
+              type="password"
+              [(ngModel)]="loginData.password"
+              name="password"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Đăng nhập
+          </button>
+        </form>
 
-      <!-- Login with Google -->
-      <button
-        (click)="loginWithGoogle()"
-        class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-      >
-        <img
-          src="https://developers.google.com/identity/images/g-logo.png"
-          alt="Google Logo"
-          class="w-6 h-6"
-        />
-        Đăng nhập với Google
-      </button>
+        <p class="mt-4 text-sm text-gray-600 text-center">
+          Chưa có tài khoản?
+          <a
+            (click)="switchToRegister()"
+            class="text-blue-600 cursor-pointer hover:text-red-600"
+            >Đăng ký ngay</a
+          >
+        </p>
+      </div>
+
+      <!-- Register Form -->
+      <div *ngIf="!isLogin">
+        <form (submit)="register()">
+          <div class="mb-4">
+            <label
+              for="fullName"
+              class="block text-sm font-medium text-gray-700"
+              >Họ và tên</label
+            >
+            <input
+              id="fullName"
+              type="text"
+              [(ngModel)]="registerData.fullName"
+              name="fullName"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-700"
+              >Email</label
+            >
+            <input
+              id="email"
+              type="email"
+              [(ngModel)]="registerData.email"
+              name="email"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label
+              for="username"
+              class="block text-sm font-medium text-gray-700"
+              >Tên đăng nhập</label
+            >
+            <input
+              id="username"
+              type="text"
+              [(ngModel)]="registerData.username"
+              name="username"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-700"
+              >Mật khẩu</label
+            >
+            <input
+              id="password"
+              type="password"
+              [(ngModel)]="registerData.password"
+              name="password"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          >
+            Đăng ký
+          </button>
+        </form>
+
+        <p class="mt-4 text-sm text-gray-600 text-center">
+          Đã có tài khoản?
+          <a
+            (click)="switchToLogin()"
+            class="text-blue-600 cursor-pointer hover:text-red-600"
+            >Đăng nhập ngay</a
+          >
+        </p>
+      </div>
     </div>
   </div>
 </div>

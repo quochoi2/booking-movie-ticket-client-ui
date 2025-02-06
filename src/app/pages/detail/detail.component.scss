@@ -171,3 +171,12 @@
 }
 
 // delete button
+
+::-webkit-scrollbar {
+  height: 8px; /* For horizontal scrollbars */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+}
