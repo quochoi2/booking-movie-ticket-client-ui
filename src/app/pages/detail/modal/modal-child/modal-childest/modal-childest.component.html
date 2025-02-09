@@ -148,12 +148,29 @@
               />
               <span class="text-gray-800 select-none cursor-pointer">Cash</span>
             </label>
+
+            <!-- Thêm phương thức chuyển khoản ngân hàng -->
+            <label class="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="bank_transfer"
+                class="h-4 w-4 text-[#e53637] border-gray-300 select-none focus:ring-red-500"
+                [(ngModel)]="selectedPaymentMethod"
+                required
+              />
+              <span class="text-gray-800 select-none cursor-pointer"
+                >Bank Transfer</span
+              >
+            </label>
           </div>
 
           <button
             type="submit"
             class="mt-6 w-full bg-[#e53637] select-none cursor-pointer text-white py-2 px-4 rounded-lg font-semibold shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600"
-            [disabled]="selectedPaymentMethod !== 'paypal'"
+            [disabled]="
+              !['paypal', 'bank_transfer'].includes(selectedPaymentMethod)
+            "
           >
             Submit
           </button>
@@ -167,3 +184,14 @@
   [isVisible]="isLoginModalVisible"
   (close)="closeLoginModal()"
 ></app-login-modal>
+
+<!-- Gọi component app-qrpayment-modal khi chọn Bank Transfer -->
+<app-qr-payment-modal
+  *ngIf="isQrModalVisible"
+  [isVisible]="isQrModalVisible"
+  [bankName]="bankName"
+  [bankAccount]="bankAccount"
+  [amount]="2000"
+  [paymentDescription]="paymentDescription"
+  (onClose)="closeQrModal()"
+></app-qr-payment-modal>

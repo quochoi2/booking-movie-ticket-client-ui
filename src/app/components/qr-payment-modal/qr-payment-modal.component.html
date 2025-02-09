@@ -1,0 +1,44 @@
+<!-- Modal hiển thị QR Code -->
+<div
+  *ngIf="isVisible"
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+>
+  <div class="bg-white rounded-lg w-[90%] max-w-md p-6 shadow-xl relative">
+    <h2 class="text-xl font-bold text-gray-800 text-center mb-4">
+      Scan QR for payment
+    </h2>
+
+    <img
+      [src]="qrCodeUrl"
+      alt="QR Code"
+      class="mx-auto w-48 h-48 border-2 border-gray-300 rounded-lg shadow-md"
+    />
+
+    <div class="mt-4 text-center">
+      <p class="text-gray-700">
+        Ngân hàng: <strong>{{ bankName }}</strong>
+      </p>
+      <p class="text-gray-700">
+        Số tài khoản: <strong>{{ bankAccount }}</strong>
+      </p>
+      <p class="text-gray-700">
+        Số tiền: <strong>{{ amount | currency }}</strong>
+      </p>
+      <p class="text-gray-700">
+        Nội dung: <strong>{{ paymentDescription }}</strong>
+      </p>
+    </div>
+
+    <p class="text-sm text-gray-500 mt-3 text-center">
+      Vui lòng thanh toán trong vòng
+      <span class="text-red-500 font-bold">{{ countdown }}</span> giây
+    </p>
+
+    <button
+      class="mt-4 w-full bg-red-500 text-white py-2 px-4 rounded-lg font-semibold shadow-md hover:bg-red-700"
+      (click)="closeModal()"
+    >
+      Hủy thanh toán
+    </button>
+  </div>
+</div>

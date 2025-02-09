@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 // App Components
 import { AppComponent } from './app.component';
@@ -19,12 +20,12 @@ import { DetailComponent } from './pages/detail/detail.component';
 import { BlogComponent } from './pages/blog/blog.component';
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 import { ModalComponent } from './pages/detail/modal/modal.component';
-import { CommonModule } from '@angular/common';
 import { ModalChildComponent } from './pages/detail/modal/modal-child/modal-child.component';
 import { ModalChildestComponent } from './pages/detail/modal/modal-child/modal-childest/modal-childest.component';
 import { LoginModalComponent } from './layouts/header/login-modal/login-modal.component';
 import { GenreComponent } from './pages/genre/genre.component';
 import { TopMovieComponent } from './components/top-movie/top-movie.component';
+import { QrPaymentModalComponent } from './components/qr-payment-modal/qr-payment-modal.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { TopMovieComponent } from './components/top-movie/top-movie.component';
     ModalChildestComponent,
     LoginModalComponent,
     TopMovieComponent,
+    QrPaymentModalComponent,
   ],
   imports: [
     AppRoutingModule,

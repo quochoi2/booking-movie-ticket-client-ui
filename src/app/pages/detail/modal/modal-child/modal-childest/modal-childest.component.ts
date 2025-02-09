@@ -11,10 +11,16 @@ import { DetailService } from '../../../../../services/detail.service';
 export class ModalChildestComponent {
   @Output() onClose = new EventEmitter<void>();
   isLoginModalVisible: boolean = false;
+  isQrModalVisible: boolean = false;
+  qrCodeUrl: string = '';
+  bankName: string = 'MBBank';
+  bankAccount: string = '0867122003';
+  amount: number = 0;
+  paymentDescription: string = '';
 
-  selectedPaymentMethod: string | null = null;
+  selectedPaymentMethod: any;
 
-  submitPayment() {
+  submitPayment(): void {
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
       this.isLoginModalVisible = true;
@@ -23,6 +29,8 @@ export class ModalChildestComponent {
 
     if (this.selectedPaymentMethod === 'paypal') {
       this.handlePaypalPayment();
+    } else if (this.selectedPaymentMethod === 'bank_transfer') {
+      this.handleBankTransfer();
     }
   }
 
@@ -82,5 +90,18 @@ export class ModalChildestComponent {
   // login
   closeLoginModal(): void {
     this.isLoginModalVisible = false;
+  }
+
+  // qr
+  handleBankTransfer(): void {
+    const transactionId = 'ORDER' + Math.floor(Math.random() * 1000000000);
+    this.paymentDescription = transactionId;
+    this.amount = this.cart.totalPrice;
+
+    this.isQrModalVisible = true;
+  }
+
+  closeQrModal(): void {
+    this.isQrModalVisible = false;
   }
 }
