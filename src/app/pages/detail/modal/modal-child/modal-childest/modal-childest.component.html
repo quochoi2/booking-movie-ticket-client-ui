@@ -189,9 +189,5 @@
 <app-qr-payment-modal
   *ngIf="isQrModalVisible"
   [isVisible]="isQrModalVisible"
-  [bankName]="bankName"
-  [bankAccount]="bankAccount"
-  [amount]="2000"
-  [paymentDescription]="paymentDescription"
   (onClose)="closeQrModal()"
 ></app-qr-payment-modal>

@@ -69,7 +69,7 @@ export class CartService {
       cinemaId,
     };
     this.cartSubject.next(updatedCart); // Cập nhật giá trị mới vào cart
-    console.log('Thông tin phim đã được cập nhật:', updatedCart);
+    // console.log('Thông tin phim đã được cập nhật:', updatedCart);
   }
 
   // Cập nhật thông tin phim vào giỏ hàng
@@ -90,7 +90,7 @@ export class CartService {
     const updatedCart = { ...currentCart, seats, totalSeatPrice }; // Cập nhật thông tin ghế và tổng giá ghế
     updatedCart.totalPrice = this.calculateTotalPrice(updatedCart); // Tính lại tổng giá sau khi thêm ghế
     this.cartSubject.next(updatedCart); // Cập nhật cart với thông tin mới
-    console.log('Thông tin ghế đã được cập nhật:', updatedCart);
+    // console.log('Thông tin ghế đã được cập nhật:', updatedCart);
   }
 
   // Cập nhật thông tin dịch vụ vào giỏ hàng và tính lại tổng giá tiền của dịch vụ
@@ -105,7 +105,7 @@ export class CartService {
     const updatedCart = { ...currentCart, services, totalServicePrice }; // Cập nhật dịch vụ và tổng giá dịch vụ
     updatedCart.totalPrice = this.calculateTotalPrice(updatedCart); // Tính lại tổng giá sau khi thêm dịch vụ
     this.cartSubject.next(updatedCart); // Cập nhật cart với thông tin mới
-    console.log('Thông tin dịch vụ đã được cập nhật:', updatedCart);
+    // console.log('Thông tin dịch vụ đã được cập nhật:', updatedCart);
   }
 
   // Tính tổng giá của cart (ghế + dịch vụ)
@@ -129,7 +129,7 @@ export class CartService {
           const currentCart = this.cartSubject.value;
           const updatedCart = { ...currentCart, email };
           this.cartSubject.next(updatedCart);
-          console.log('Email đã được load và cập nhật vào cart:', updatedCart);
+          // console.log('Email đã được load và cập nhật vào cart:', updatedCart);
         }
       } catch (error) {
         console.error('Error decoding accessToken', error);

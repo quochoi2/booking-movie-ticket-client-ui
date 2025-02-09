@@ -12,12 +12,6 @@ export class ModalChildestComponent {
   @Output() onClose = new EventEmitter<void>();
   isLoginModalVisible: boolean = false;
   isQrModalVisible: boolean = false;
-  qrCodeUrl: string = '';
-  bankName: string = 'MBBank';
-  bankAccount: string = '0867122003';
-  amount: number = 0;
-  paymentDescription: string = '';
-
   selectedPaymentMethod: any;
 
   submitPayment(): void {
@@ -94,10 +88,6 @@ export class ModalChildestComponent {
 
   // qr
   handleBankTransfer(): void {
-    const transactionId = 'ORDER' + Math.floor(Math.random() * 1000000000);
-    this.paymentDescription = transactionId;
-    this.amount = this.cart.totalPrice;
-
     this.isQrModalVisible = true;
   }
 

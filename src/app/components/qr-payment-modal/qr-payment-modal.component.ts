@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { PaymentService } from '../../services/payment.service';
 import { Router } from '@angular/router';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-qr-payment-modal',
@@ -9,12 +10,17 @@ import { Router } from '@angular/router';
 })
 export class QrPaymentModalComponent implements OnInit {
   @Input() isVisible: boolean = false;
-  @Input() bankAccount: string = '';
-  @Input() bankName: string = '';
-  @Input() amount: number = 0;
-  @Input() paymentDescription: string = '';
+  // @Input() bankAccount: string = '';
+  // @Input() bankName: string = '';
+  // @Input() amount: number = 0;
 
   @Output() onClose = new EventEmitter<void>();
+
+  cart: any;
+  bankName: string = 'MBBank';
+  bankAccount: string = '0867122003';
+  amount: number = 0;
+  paymentDescription: string = '';
 
   qrCodeUrl: string = '';
   countdown: number = 300;
@@ -22,16 +28,35 @@ export class QrPaymentModalComponent implements OnInit {
   checkPaymentTimeout: any;
   isCheckingPayment: boolean = false;
 
-  constructor(private paymentService: PaymentService, private router: Router) {}
+  constructor(
+    private paymentService: PaymentService,
+    private router: Router,
+    private cartService: CartService
+  ) {}
 
   ngOnInit() {
+    this.getCartData();
     this.generateQR();
     this.startCountdown();
     this.startCheckingPayment();
   }
 
+  getCartData() {
+    this.cart = this.cartService.getCart(); // ✅ Lấy dữ liệu từ CartService
+    if (!this.cart || !this.cart.totalPrice) {
+      console.error('⚠️ Lỗi: Không có giỏ hàng!');
+      this.closeModal();
+      return;
+    }
+    this.amount = this.cart.totalPrice;
+  }
+
   generateQR() {
+    if (!this.cart) return;
+    const transactionId = 'SE-' + Math.floor(Math.random() * 1000000000);
+    this.paymentDescription = transactionId;
     this.qrCodeUrl = `https://qr.sepay.vn/img?acc=${this.bankAccount}&bank=${this.bankName}&amount=${this.amount}&des=${this.paymentDescription}`;
+    console.log('✅ QR Code Generated:', this.qrCodeUrl);
   }
 
   startCountdown() {
@@ -50,19 +75,23 @@ export class QrPaymentModalComponent implements OnInit {
    * Liên tục kiểm tra thanh toán mỗi 5 giây
    */
   startCheckingPayment() {
+    if (!this.cart) return;
+
     this.isCheckingPayment = true;
+    clearInterval(this.checkPaymentTimeout);
+
     this.checkPaymentTimeout = setInterval(async () => {
       try {
         console.log('🔍 Đang kiểm tra thanh toán...');
         const response = await this.paymentService.checkPayment(
-          this.amount,
+          this.cart,
           this.paymentDescription
         );
 
         if (response.data.success) {
           alert('✅ Thanh toán thành công!');
           this.closeModal();
-          this.router.navigate(['/']); // Điều hướng về trang chủ
+          this.router.navigate(['/']);
         }
       } catch (error) {
         console.error('⚠️ Lỗi khi kiểm tra thanh toán:', error);
