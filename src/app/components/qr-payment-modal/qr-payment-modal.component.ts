@@ -53,7 +53,7 @@ export class QrPaymentModalComponent implements OnInit {
 
   generateQR() {
     if (!this.cart) return;
-    const transactionId = 'SE' + Math.floor(Math.random() * 1000000000);
+    const transactionId = 'SE-' + Math.floor(Math.random() * 1000000000);
     this.paymentDescription = transactionId;
     this.qrCodeUrl = `https://qr.sepay.vn/img?acc=${this.bankAccount}&bank=${this.bankName}&amount=2000&des=${this.paymentDescription}`;
     console.log('✅ QR Code Generated:', this.qrCodeUrl);
