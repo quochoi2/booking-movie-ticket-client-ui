@@ -16,7 +16,7 @@ export class PaymentService {
 
   checkPayment(cart: any, reference: string): Promise<AxiosResponse<any>> {
     const payload = {
-      amount: 2000, // change later
+      amount: cart.totalPrice,
       reference: reference,
       cart: cart,
     };
