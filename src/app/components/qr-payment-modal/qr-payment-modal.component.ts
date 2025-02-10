@@ -43,6 +43,7 @@ export class QrPaymentModalComponent implements OnInit {
 
   getCartData() {
     this.cart = this.cartService.getCart(); // ✅ Lấy dữ liệu từ CartService
+
     if (!this.cart || !this.cart.totalPrice) {
       console.error('⚠️ Lỗi: Không có giỏ hàng!');
       this.closeModal();
@@ -56,7 +57,6 @@ export class QrPaymentModalComponent implements OnInit {
     const transactionId = 'SE' + Math.floor(Math.random() * 1000000000);
     this.paymentDescription = transactionId;
     this.qrCodeUrl = `https://qr.sepay.vn/img?acc=${this.bankAccount}&bank=${this.bankName}&amount=2000&des=${this.paymentDescription}`;
-    console.log('✅ QR Code Generated:', this.qrCodeUrl);
   }
 
   startCountdown() {
@@ -83,10 +83,15 @@ export class QrPaymentModalComponent implements OnInit {
     this.checkPaymentTimeout = setInterval(async () => {
       try {
         console.log('🔍 Đang kiểm tra thanh toán...');
+        // console.log('📨 Gửi request checkPayment với data:', {
+        //   cart: this.cart,
+        //   reference: this.paymentDescription,
+        // });
         const response = await this.paymentService.checkPayment(
           this.cart,
           this.paymentDescription
         );
+        console.log('📩 API Response:', response.data);
 
         if (response.data.success) {
           alert('✅ Thanh toán thành công!');

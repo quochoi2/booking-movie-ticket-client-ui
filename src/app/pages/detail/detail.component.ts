@@ -247,12 +247,13 @@ export class DetailComponent implements OnInit {
     this.cinemaName = showtime.cinema?.name || '';
     this.showtimeId = showtime.id;
     this.cinemaId = showtime.cinema?.id || 0;
+    console.log(this.cinemaId);
 
     this.detailService
       .getSeats(this.cinemaId)
       .then((response) => {
         this.seats = response.data.data;
-        // console.log(this.seats);
+        console.log('🪑 Seats Data:', this.seats);
         this.isModalOpen = true;
       })
       .catch((error) => console.error('Error fetching seats:', error));

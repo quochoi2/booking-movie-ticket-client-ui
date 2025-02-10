@@ -16,11 +16,14 @@ export class PaymentService {
 
   checkPayment(cart: any, reference: string): Promise<AxiosResponse<any>> {
     const payload = {
-      amount: cart.totalPrice,
+      amount: 2000, // change later
       reference: reference,
       cart: cart,
     };
-
+    // console.log(
+    //   '📨 Đang gửi request kiểm tra thanh toán:',
+    //   JSON.stringify(payload, null, 2)
+    // );
     return this.apiService.postNoAuth('/qrcode/check-payment', payload);
   }
 }
