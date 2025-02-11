@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit {
 
   async toggleSearch(): Promise<void> {
     this.showSearch = !this.showSearch;
-    console.log('Search Term on Toggle:', this.searchTerm);
+    // console.log('Search Term on Toggle:', this.searchTerm);
 
     if (this.showSearch) {
       try {

@@ -91,7 +91,7 @@ export class QrPaymentModalComponent implements OnInit {
           this.cart,
           this.paymentDescription
         );
-        console.log('📩 API Response:', response.data);
+        // console.log('📩 API Response:', response.data);
 
         if (response.data.success) {
           alert('✅ Thanh toán thành công!');

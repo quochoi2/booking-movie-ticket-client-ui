@@ -80,7 +80,7 @@ export class CartService {
       email,
     };
     this.cartSubject.next(updatedCart);
-    console.log('Thông email đã được cập nhật:', updatedCart);
+    // console.log('Thông email đã được cập nhật:', updatedCart);
   }
 
   // Cập nhật thông tin ghế vào giỏ hàng và tính lại tổng giá tiền của ghế

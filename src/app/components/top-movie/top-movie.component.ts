@@ -26,28 +26,28 @@ export class TopMovieComponent implements OnInit {
         this.genreService
           .top5MovieByDay(this.currentMonth, this.currentDay)
           .then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
             this.movies = res.data.movies;
           });
         break;
 
       case 'week':
         this.genreService.top5MovieByWeek(this.currentWeek).then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.movies = res.data.movies;
         });
         break;
 
       case 'month':
         this.genreService.top5MovieByMonth(this.currentMonth).then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.movies = res.data.movies;
         });
         break;
 
       case 'year':
         this.genreService.top5MovieByYear(this.currentYear).then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.movies = res.data.movies;
         });
         break;

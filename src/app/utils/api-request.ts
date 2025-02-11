@@ -52,7 +52,7 @@ export class ApiService {
 
       const newAccessToken = response.data.token.accessToken;
 
-      console.log('Token renewed successfully');
+      // console.log('Token renewed successfully');
 
       localStorage.setItem('accessToken', newAccessToken); // Lưu access token mới vào localStorage
       this.updateAuthInstance(); // Cập nhật lại axios instance với token mới

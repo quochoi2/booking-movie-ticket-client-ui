@@ -40,7 +40,7 @@ export class LoginModalComponent {
     this.authService
       .login(this.loginData.username, this.loginData.password)
       .then((res: any) => {
-        console.log('Login successful', res);
+        // console.log('Login successful', res);
         const accessToken = res.data.token.accessToken;
         localStorage.setItem('accessToken', accessToken);
         const decode = jwtDecode<any>(accessToken);
@@ -68,7 +68,8 @@ export class LoginModalComponent {
         this.registerData.password
       )
       .then((res: any) => {
-        console.log('Registration successful', res);
+        // console.log('Registration successful', res);
+        alert('Registration successful!');
         this.isLogin = true;
       })
       .catch((error: any) => {

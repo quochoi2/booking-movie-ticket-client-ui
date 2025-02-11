@@ -86,7 +86,7 @@ export class HomeComponent implements OnInit {
       this.detailService
         .executePayment(paymentId, payerId)
         .then((response) => {
-          console.log('Payment Execution Response:', response.data);
+          // console.log('Payment Execution Response:', response.data);
           alert('Payment successful!');
         })
         .catch((error) => {
