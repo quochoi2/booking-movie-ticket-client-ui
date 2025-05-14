@@ -149,19 +149,6 @@ ol {
   padding-bottom: 100px;
 }
 
-.text-white h1,
-.text-white h2,
-.text-white h3,
-.text-white h4,
-.text-white h5,
-.text-white h6,
-.text-white p,
-.text-white span,
-.text-white li,
-.text-white a {
-  color: #fff;
-}
-
 /* buttons */
 
 .primary-btn {
@@ -704,7 +691,6 @@ ol {
 .product__item__text ul li {
   list-style: none;
   font-size: 10px;
-  color: #ffffff;
   font-weight: 700;
   padding: 1px 10px;
   background: rgba(255, 255, 255, 0.2);
@@ -836,7 +822,6 @@ ol {
 .product__sidebar__comment__item__text ul li {
   list-style: none;
   font-size: 10px;
-  color: #ffffff;
   font-weight: 700;
   padding: 1px 10px;
   background: rgba(255, 255, 255, 0.2);
@@ -1039,7 +1024,6 @@ ol {
 .anime__details__widget ul li {
   list-style: none;
   font-size: 15px;
-  color: #ffffff;
   line-height: 30px;
   position: relative;
   padding-left: 18px;
